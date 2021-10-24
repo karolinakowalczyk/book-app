@@ -1,0 +1,36 @@
+.container--register {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+  }
+  .smallContainer--register {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 100%;
+  }
+  .inputContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 750px;
+    height: 500px;
+    background: #d7e0ff;
+    border-radius: 30px;
+  }
+  .item--ready--2 {
+    display: flex;
+    flex-basis: 50%;
+    justify-content: center;
+  }

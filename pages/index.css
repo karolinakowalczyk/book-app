@@ -1,0 +1,194 @@
+.container {
+    margin-top: 40px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+  }
+  .upper-container--diy {
+    width: 100%;
+    text-align: center;
+  }
+  .container--diy {
+    margin-top: 40px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+  }
+  .container--radio {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+  }
+  .upper-container--ready {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .container--ready {
+    display: flex;
+    width: 70%;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+  }
+  .item--ready {
+    display: flex;
+    flex-basis: 33%;
+    margin-top: 30px;
+    justify-content: center;
+  }
+  .item--ready--1 {
+    width: 285px;
+  }
+  
+  .radio--item {
+    display: flex;
+    flex-basis: 33%;
+    align-items: center;
+    align-content: center;
+    margin-bottom: 40px !important;
+  }
+  .container__paragraph {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 40px;
+  }
+  .header {
+    display: flex;
+    flex-direction: row;
+  }
+  .header__paragraph {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+  }
+  .paper {
+    display: "flex";
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    background-color: #f3f3f3 !important;
+    padding-top: 20px !important;
+  }
+  h1 {
+    margin-bottom: 40px;
+  }
+  .img__small {
+    -webkit-animation: fadein 2s;
+    -moz-animation: fadein 2s;
+    -ms-animation: fadein 2s;
+    -o-animation: fadein 2s;
+    animation: fadein 2s;
+    width: 35%;
+    height: auto;
+    margin: 0 20px;
+  }
+  .card--img {
+    width: 140px;
+    height: auto;
+  }
+  .paragraph {
+    width: 250px !important;
+    height: 140px !important;
+  }
+  
+  img {
+    -webkit-animation: fadein 2s;
+    -moz-animation: fadein 2s;
+    -ms-animation: fadein 2s;
+    -o-animation: fadein 2s;
+    animation: fadein 2s;
+    width: 45%;
+    height: auto;
+    margin: 0 20px;
+  }
+  p {
+    width: 75%;
+    text-align: justify;
+    margin: 0 auto;
+  }
+  .container--login {
+    display: flex;
+    flex-direction: column;
+    width: 362px;
+    padding: 45px;
+    background: #d7e0ff;
+    border-radius: 30px;
+  }
+  .authView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    height: 100vh;
+  }
+  
+  .infoMain {
+    font-size: 36px;
+    font-weight: bold;
+    line-height: 46px;
+    letter-spacing: 0.2px;
+  }
+  .infoSub {
+    margin-top: 16px;
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 34px;
+    letter-spacing: 0.2px;
+  }
+  
+  .subBtn {
+    align-self: center;
+    margin-top: 50px;
+    font-size: 13px;
+    color: gray;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @-moz-keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @-webkit-keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
