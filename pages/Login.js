@@ -1,7 +1,8 @@
 import { Button, TextInput } from "react-native-paper";
 import {Link, Redirect } from "react-router-native";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Banner } from "react-native";
 import React from "react";
+import BackButton from "./BackButton";
 // import { auth } from "./../firebase";
 // import MyContext from "./../Context";
 
@@ -29,6 +30,7 @@ const Login = () => {
   }
   return (
     <View style={styles.authView}>
+      <BackButton/>
       <View style={styles.containerLogin}>
         <View
           style={{
@@ -78,7 +80,7 @@ const Login = () => {
          <Text> Zaloguj się</Text>
         </Button>
       </View>
-    </View>
+      </View>
   );
 };
 
