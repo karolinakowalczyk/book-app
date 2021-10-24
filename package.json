@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@mdi/js": "^6.3.95",
     "expo": "~42.0.1",
     "expo-status-bar": "~1.0.4",
     "firebase": "^9.1.3",

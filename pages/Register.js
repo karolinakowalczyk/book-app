@@ -5,6 +5,8 @@ import { TextInput, Button } from "react-native-paper";
 import { View, Text,StyleSheet } from "react-native";
 // import MyContext from "../Context";
 
+import BackButton from "./BackButton";
+
 const Register = () => {
   const labels = ["Imię", "Nazwisko", "Email", "Hasło"];
   const [values, setValues] = React.useState(["", "", "", "", "", ""]);
@@ -41,7 +43,7 @@ const Register = () => {
   const InputCreate = () => {
     const renderInputs = labels.map((el, index) => {
       return (
-        <View style={styles.itemReady}>
+        <View style={styles.itemReady} key={index}>
             <TextInput
               value={values[index]}
               onInput={handleInput}
@@ -59,6 +61,7 @@ const Register = () => {
 
   return (
     <View style={styles.containerRegister}>
+      <BackButton/>
       <View style={styles.box}>
         <Text style={styles.infoMain}>Book app</Text>
         <Text style={styles.infoSub}>Rejestracja</Text>

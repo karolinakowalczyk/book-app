@@ -5,6 +5,7 @@ import { Provider as PaperProvider } from 'react-native-paper'
 import { StyleSheet, Text, View } from 'react-native';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import MainPage from './pages/MainPage';
 
 export default function App() {
   return (
@@ -17,13 +18,14 @@ export default function App() {
           <Route path="/login" exact>
             <Login/>
           </Route>   
-          <Route path="/" exact> 
-          <View style={styles.container}>
+          <Route path="/" exact>
+            <MainPage/>
+            {/*<View style={styles.container}>
             <View>
             <Link to="/login"><Text>Go to login page</Text></Link>
             <StatusBar style="auto" />
             </View>
-          </View>
+  </View>*/}
           </Route>
         </Switch>
       </NativeRouter>
@@ -32,10 +34,5 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FF0',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  
 });
