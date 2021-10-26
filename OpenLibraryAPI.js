@@ -2,7 +2,8 @@ import fetch from "node-fetch"
 
 const numBooks = 35300005
 const query = {
-    'book_data': 'https://openlibrary.org/works/OL`M.json'
+    'book_data_M': 'https://openlibrary.org/editions/OL`M.json',
+    'book_data_I': 'https://openlibrary.org/isbn/`.json'
 }
 
 
@@ -18,8 +19,8 @@ function getRandomInt(num=1, min=1, max=numBooks){
     return result
 }
 
-async function getBook(id){
-    return fetch(query['book_data'].replace('`', id))  
+async function getBook(id, mode='M'){                           // Mode=['M', 'I'] -> M => book id; I => ISBN
+    return fetch(query['book_data_'+mode].replace('`', id))  
         .then(response => response.json())
 }
 
@@ -28,10 +29,11 @@ async function getRandomBooks(num=20){
     var promises = []
 
     for(var i in numbers){
-        promises.push(getBook(numbers[i]))
+        promises.push(getBook(i))
     }
 
     return await Promise.all(promises)
 }
 
 console.log(await getRandomBooks())
+console.log(await getBook(9780140328721, 'I'))
