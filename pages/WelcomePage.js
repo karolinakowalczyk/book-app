@@ -17,6 +17,10 @@ const WelcomePage = () => {
           <Button mode="contained" style={styles.subBtn}>
             <Text style={styles.subBtnText}>ZAREJESTRUJ SIĘ</Text>
           </Button>
+      </Link>
+      {/*delete*/}
+      <Link to="/book-details">
+         <Text>Book details view</Text>
         </Link>
     </View>
   );

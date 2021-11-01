@@ -10,6 +10,7 @@ import BottomNav from './components/BottomNav';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
 import UserBooksPage from './pages/UserBooksPage';
+import BookDetails from './pages/BookDetails';
 
 export default function App() {
   return (
@@ -24,8 +25,11 @@ export default function App() {
             </Route>   
             <Route path="/" exact>
               <WelcomePage/>
-            </Route>
-            {/* <Route>
+          </Route>
+          <Route path="/book-details" exact>
+              <BookDetails/>
+            </Route>   
+            <Route>
               <Route path="/home" exact>
                 <HomePage/>
               </Route>
@@ -36,10 +40,7 @@ export default function App() {
                 <UserBooksPage/>
               </Route>
             <BottomNav/>
-            </Route> */}
-         
-
-          
+            </Route>        
         </Switch>
       </NativeRouter>
     </PaperProvider>
