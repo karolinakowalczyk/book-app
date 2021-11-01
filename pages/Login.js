@@ -2,7 +2,8 @@ import { Button, TextInput } from "react-native-paper";
 import {Link, Redirect } from "react-router-native";
 import { StyleSheet, View, Text, Banner } from "react-native";
 import React from "react";
-import BackButton from "./BackButton";
+import BackButton from "../components/BackButton";
+import BottomNav from '../components/BottomNav';
 // import { auth } from "./../firebase";
 // import MyContext from "./../Context";
 
@@ -13,6 +14,7 @@ const Login = () => {
   // const { currentUser, setCurrentUser } = React.useContext(MyContext);
 
   const login = () => {
+    setRedirect(true);
     // auth
     //   .signInWithEmailAndPassword(email, password)
     //   .then((loggedUser) => {
@@ -26,7 +28,7 @@ const Login = () => {
     //   });
   };
   if (redirect) {
-    return <Redirect to="/" />;
+    return <BottomNav />;
   }
   return (
     <View style={styles.authView}>
@@ -75,9 +77,8 @@ const Login = () => {
           Kliknij tu by się zarejestrować
           </Text>
         </Link>
-
-        <Button mode="outlined" style={{ marginTop: 20 }} onClick={login}>
-         <Text> Zaloguj się</Text>
+        <Button mode="outlined" style={{ marginTop: 20 }} onPress={login}>
+          <Text> Zaloguj się</Text>
         </Button>
       </View>
       </View>

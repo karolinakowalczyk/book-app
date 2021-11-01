@@ -5,7 +5,7 @@ import { TextInput, Button } from "react-native-paper";
 import { View, Text,StyleSheet } from "react-native";
 // import MyContext from "../Context";
 
-import BackButton from "./BackButton";
+import BackButton from "../components/BackButton";
 
 const Register = () => {
   const labels = ["Imię", "Nazwisko", "Email", "Hasło"];
