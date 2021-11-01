@@ -24,7 +24,7 @@ const Comment = (props) => {
           <Text>
             <Text style={[styles.text, styles.name]}>Name</Text>
             {' '}
-            <Text style={styles.text}>Some comment</Text>
+            <Text style={styles.text}>{props.comment}</Text>
           </Text>
           <Text style={[styles.text, styles.created]}>{moment().fromNow()}</Text>
         </View>

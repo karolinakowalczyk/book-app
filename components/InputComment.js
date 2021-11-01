@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -18,15 +18,15 @@ const InputComment = () => {
   // NOTE: You don't really need it for this example, because
   // we're using a keyboard without return button, but I left it here
   // in case you'd want to switch to a different keyboard
-  //onSubmitEditing = ({ nativeEvent: { text } }) => this.setState({ text }, this.submit);
+  //const onSubmitEditing = ({ nativeEvent: { text } }) => this.setState({ text }, submit);
 
   // Call this.props.onSubmit handler and pass the comment
-  submit = () => {
+  const submit = () => {
     if (text) {
         //this.setState({ text: undefined }, () => this.props.onSubmit(text));
-        setText('');
+        setText(''), () => props.onSubmit(text);
     } else {
-      alert('Please enter your comment first');
+      alert('Dodaj komentarz przed wysłaniem!');
     }
   };
     return (
@@ -38,21 +38,21 @@ const InputComment = () => {
         <View style={styles.container}>
           {/* Comment input field */}
           <TextInput
-            placeholder="Add a comment..."
+            placeholder="Co myślisz o tej książce?"
             keyboardType="twitter" // keyboard with no return button
-            autoFocus={true} // focus and show the keyboard
+            autoFocus={false} // focus and show the keyboard
             style={styles.input}
             value={text}
             onChangeText={onChangeText} // handle input changes
-           // onSubmitEditing={} // handle submit event
+            //onSubmitEditing={onSubmitEditing} // handle submit event
           />
           {/* Post button */}
           <TouchableOpacity
             style={styles.button}
-            onPress={this.submit}
+            onPress={submit}
           >
             {/* Apply inactive style if no input */}
-            <Text style={[styles.text, !text ? styles.inactive : []]}>Post</Text>
+            <Text style={[styles.text, !text ? styles.inactive : []]}>Dodaj</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

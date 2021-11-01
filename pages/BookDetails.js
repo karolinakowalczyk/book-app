@@ -1,25 +1,28 @@
-import { View, Text} from "react-native";
+import { View, Text, ScrollView, FlatList} from "react-native";
 import React from 'react';
 import BackButton from "../components/BackButton";
 import { Colors, Card, IconButton, Button } from "react-native-paper";
 import BigStars from "../components/BigStars";
 import Comment from "../components/Comment";
 import InputComment from "../components/InputComment"
+import CommentList from "../components/CommentList"
 
 
 const BookDetails = () => {
     const [filledHeart, setFilledHeart] = React.useState(false);
     const likeBook = () => {
-    setFilledHeart(!filledHeart);
+        setFilledHeart(!filledHeart);
     //TO DO: add/remove this book from 'liked books'
     }
     const addToLibrary = () => {
         //TO DO: implement this method
     }
     return (
-        <View style={{width: '100%', height: '100%', backgroundColor: Colors.grey200}}>
+        <View style={{ width: '100%', height: '100%', backgroundColor: Colors.grey200 }}>
+            
             <BackButton />
-            <Card style={{ width: '100%', height: '100%'}}>
+            
+            <Card style={{ width: '100%', height: '100%', marginBottom: 10}}>
                 <Card.Cover style={{width: '100%', height: '50%'}} source={{ uri: 'https://i.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68' }} />
                 <Card.Content style={{ marginTop: 10, paddingBottom: 5 }}>
                     <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -34,11 +37,23 @@ const BookDetails = () => {
                     <Button icon="plus" mode="outlined"  style={{ marginTop: 10 }} onPress={() => addToLibrary()}>
                             Dodaj do biblioteki
                     </Button>
-                    <Comment />
-                    <InputComment/>
+                    {/*<Comment />
+                    <InputComment/>*/}
+                    <CommentList style={{ marginTop: 10 }} />
+                    {/* <View style={{flexGrow: 1}}>
+                    <ScrollView style={{ marginTop: 10 }}>
+                        <CommentList style={{ marginTop: 10 }} />
+                    </ScrollView>
+                </View>*/}
+                     
+                    
                 </Card.Content>
                 
             </Card>
+            
+            
+            
+            
         </View>
     );
   };
