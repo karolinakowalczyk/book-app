@@ -27,18 +27,18 @@ export default function App() {
               <WelcomePage/>
           </Route>
           <Route path="/book-details" exact>
-              <BookDetails/>
-            </Route>   
+            <BookDetails/>
+          </Route>
             <Route>
               <Route path="/home" exact>
                 <HomePage/>
-              </Route>
+            </Route>
               <Route path="/profile" exact>
                 <ProfilePage/>
               </Route>
               <Route path="/userBooks" exact>
                 <UserBooksPage/>
-              </Route>
+            </Route>
             <BottomNav/>
             </Route>        
         </Switch>

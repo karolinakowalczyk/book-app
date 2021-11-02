@@ -1,5 +1,5 @@
 import { Avatar, Button  } from "react-native-paper";
-import {Link, Redirect } from "react-router-native";
+import {Link } from "react-router-native";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import React from "react";
 const WelcomePage = () => {
@@ -18,10 +18,6 @@ const WelcomePage = () => {
             <Text style={styles.subBtnText}>ZAREJESTRUJ SIĘ</Text>
           </Button>
       </Link>
-      {/*delete*/}
-      <Link to="/book-details">
-         <Text>Book details view</Text>
-        </Link>
     </View>
   );
 };

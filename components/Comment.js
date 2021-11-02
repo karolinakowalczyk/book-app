@@ -6,6 +6,7 @@ import {
   View
 } from 'react-native';
 import moment from 'moment';
+import { Colors } from "react-native-paper";
 
 const Comment = (props) => {
 
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     borderBottomWidth: 1,
-    borderColor: '#EEE',
+    borderColor: Colors.white,
     padding: 5,
   },
   avatar: {
@@ -57,14 +58,14 @@ const styles = StyleSheet.create({
     height: 26,
   },
   text: {
-    color: '#000',
+    color: Colors.black,
     fontSize: 15,
   },
   name: {
     fontWeight: 'bold',
   },
   created: {
-    color: '#BBB',
+    color: Colors.grey300,
   },
 });
 

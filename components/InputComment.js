@@ -6,8 +6,9 @@ import {
   Text,
   View, TouchableOpacity
 } from 'react-native';
+import { Colors } from "react-native-paper";
 
-const InputComment = () => {
+const InputComment = (props) => {
 
   const [text, setText] = React.useState("");
 
@@ -23,8 +24,8 @@ const InputComment = () => {
   // Call this.props.onSubmit handler and pass the comment
   const submit = () => {
     if (text) {
-        //this.setState({ text: undefined }, () => this.props.onSubmit(text));
-        setText(''), () => props.onSubmit(text);
+      setText('');
+      props.onSubmit(text);
     } else {
       alert('Dodaj komentarz przed wysłaniem!');
     }
@@ -61,10 +62,10 @@ const InputComment = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFF',
+    backgroundColor: Colors.white,
     flexDirection: 'row',
     borderTopWidth: 1,
-    borderColor: '#EEE',
+    borderColor: Colors.white,
     alignItems: 'center',
     paddingLeft: 15,
   },
@@ -80,10 +81,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   inactive: {
-    color: '#CCC',
+    color: Colors.grey300,
   },
   text: {
-    color: '#3F51B5',
+    color: Colors.purple800,
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: 15,
