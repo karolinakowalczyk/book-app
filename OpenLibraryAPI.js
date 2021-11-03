@@ -15,7 +15,19 @@ const importantKeys = [
     'author_name',
     'subject',
     'subject_key',
+]
 
+const importantKeysEdition = [
+    'key',
+    'subjects',
+    'series',
+    'publishers',
+    'authors',
+    'isbn_10',
+    'isbn_13',
+    'genres',
+    'publish_date',
+    'title'
 ]
 
 function fetchMostImportantData(data, keys){
@@ -41,9 +53,11 @@ function getRandomInt(num=1, min=1, max=numBooks){
 }
 
 // Mode=['M', 'I'] -> M => book id (OLID); I => ISBN
-async function getBook(id, mode='M'){                           
-    return fetch(parseQuery('book_data_'+mode, id))  
-        .then(response => response.json())
+async function getBook(id, mode='M', fullData=false, keys=importantKeysEdition){                           
+    let data = await fetch(parseQuery('book_data_'+mode, id))  
+                        .then(response => response.json())
+    if (!fullData) data = fetchMostImportantData(data, keys)
+    return data
 }
 
 async function getRandomBooks(num=20){
@@ -85,4 +99,4 @@ async function search({query='', name='', author='', page=1, limit=20, fullData=
 //await search({query: 'Tolkien', limit: 1, page: 10})
 //console.log(await getRandomBooks())
 //console.log(await getBook(9780140328721, 'I'))
-console.log((await search({query: 'Tolkien', limit: 1, page: 15})))
+//console.log((await search({query: 'Tolkien', limit: 1, page: 15})))
