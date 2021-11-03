@@ -7,6 +7,22 @@ const query = {
     'book_data_I': 'https://openlibrary.org/isbn/`.json',
     'search': 'http://openlibrary.org/search.json?`'
 }
+const importantKeys = [
+    'key',
+    'title',
+    'edition_key',
+    'author_key',
+    'author_name',
+    'subject',
+    'subject_key',
+
+]
+
+function fetchMostImportantData(data, keys){
+    let parsed = {}
+    for(let i in keys) parsed[keys[i]] = data[keys[i]]
+    return parsed
+}
 
 function parseQuery(q, insert){
     return query[q].replace('`', insert)
@@ -48,7 +64,7 @@ async function getRandomBooks(num=20){
     page - page number to show
     limit - entry limit per page
 */
-async function search({query='', name='', author='', page=1, limit=20}={}){
+async function search({query='', name='', author='', page=1, limit=20, fullData=false, keys=importantKeys}={}){
     var request = ''
     
     if(query != '') request += `q=${query}&`
@@ -60,7 +76,9 @@ async function search({query='', name='', author='', page=1, limit=20}={}){
     request += `limit=${limit}`
 
     console.log(parseQuery('search', request))
-    return fetch(parseQuery('search', request)).then(response => response.json())
+    let data = await fetch(parseQuery('search', request)).then(response => response.json())
+    if (!fullData) for (let entry in data.docs) data.docs[entry] = fetchMostImportantData(data.docs[entry], keys)
+    return data
 }
 
 
