@@ -60,12 +60,12 @@ async function getBook(id, mode='M', fullData=false, keys=importantKeysEdition){
     return data
 }
 
-async function getRandomBooks(num=20){
+async function getRandomBooks(num=20, fullData=false, keys=importantKeysEdition){
     var numbers = getRandomInt(num=num)
     var promises = []
 
     for(var i in numbers){
-        promises.push(getBook(i))
+        promises.push(getBook(i, fullData, keys))
     }
 
     return await Promise.all(promises)
