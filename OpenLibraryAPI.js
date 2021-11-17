@@ -4,9 +4,8 @@ import fetch from "node-fetch"
 const numBooks = 35300005
 const query = {
     'book_data_M': 'https://openlibrary.org/editions/OL`M.json',
-    'book_data_I': 'https://openlibrary.org/isbn/`.json',
     'search': 'http://openlibrary.org/search.json?`',
-    'image': 'https://covers.openlibrary.org/b/$key/$value-$size.jpg'
+    'image': 'https://covers.openlibrary.org/b/OLID/$value-$size.jpg'
 }
 const importantKeys = [
     'key',
@@ -53,9 +52,8 @@ function getRandomInt(num=1, min=1, max=numBooks){
     return result
 }
 
-// Mode=['M', 'I'] -> M => book id (OLID); I => ISBN
-async function getBook(id, mode='M', fullData=false, keys=importantKeysEdition){                           
-    let data = await fetch(parseQuery('book_data_'+mode, id))  
+async function getBook(id, fullData=false, keys=importantKeysEdition){                           
+    let data = await fetch(parseQuery('book_data_M', id))  
                         .then(response => response.json())
     if (!fullData) data = fetchMostImportantData(data, keys)
     return data
@@ -66,7 +64,7 @@ async function getRandomBooks(num=20, fullData=false, keys=importantKeysEdition)
     var promises = []
 
     for(var i in numbers){
-        promises.push(getBook(i, fullData, keys))
+        promises.push(getBook(numbers[i], fullData, keys))
     }
 
     return await Promise.all(promises)
@@ -96,13 +94,11 @@ async function search({query='', name='', author='', page=1, limit=20, fullData=
     return data
 }
 
-async function getImageUrl(key, size='S', mode='I'){
-    if(mode == 'I') mode = 'ISBN'
-    else if(mode == 'M') mode = 'OLID'
-    return query['image'].replace('$key', mode).replace('$value', key).replace('$size', size)
+async function getImageUrl(key, size='S'){
+    return query['image'].replace('$value', key).replace('$size', size)
 }
 
 //await search({query: 'Tolkien', limit: 1, page: 10})
-//console.log(await getRandomBooks())
-//console.log(await getImageUrl(9780140328721))
+//console.log(await getRandomBooks(2))
+//console.log(await getImageUrl('OL7353617M'))
 //console.log((await search({query: 'Tolkien', limit: 1, page: 15})))
