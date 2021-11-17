@@ -24,8 +24,8 @@ const InputComment = (props) => {
   // Call this.props.onSubmit handler and pass the comment
   const submit = () => {
     if (text) {
+      props.addComment(text);
       setText('');
-      props.onSubmit(text);
     } else {
       alert('Dodaj komentarz przed wysłaniem!');
     }

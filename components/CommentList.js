@@ -29,17 +29,18 @@ const CommentList = (props) => {
       setRefreshing(false);
   };
 
-  // Call API to submit a new comment
-  const submitComment = () => {
+  const addComment = (text) => {
     setRefreshing(true);
-    comments.push("example comment after submit");
+    comments.push(text);
+    //add comment to database
     fetchComments(comments); 
     setRefreshing(false);
-  };
+    
+  }
     return (
        <View style={styles.container}>
             
-            <InputComment onSubmit={submitComment} />
+            <InputComment addComment={addComment} />
             {/* Render each comment with Comment component */}
           {comments.map((comment, index) => <Comment comment={comment} key={index} />)}
             
