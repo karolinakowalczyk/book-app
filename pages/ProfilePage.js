@@ -6,9 +6,7 @@ import { Avatar, Colors, Button } from 'react-native-paper';
 
 const ProfilePage = () => {
     return (
-   
     <View style={[styles.profileContainer, {
-      // Try setting `flexDirection` to `"row"`.
       flexDirection: "column"
     }]}>
         <BackButton />

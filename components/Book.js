@@ -16,9 +16,8 @@ const Stars = (props) => {
     return <View style={{flexDirection: 'row', marginTop: 10}}>{amount}</View>;
 }
 
-const Book = (props) => {
+const Book = () => {
   return (
-    <Link to="/book-details">   
       <Card style={{width: '85%'}}>
       <Card.Cover style={{width: '100%', height: '50%'}} source={{ uri: 'https://picsum.photos/200/300' }} />
       <Card.Content style={{marginTop: 10, paddingBottom: 5}}>
@@ -27,7 +26,6 @@ const Book = (props) => {
         <Stars />
       </Card.Content>
       </Card>
-    </Link>
     )
 }
 
