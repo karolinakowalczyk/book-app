@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Searchbar } from 'react-native-paper';
+import { Searchbar, IconButton, Colors } from 'react-native-paper';
+import {View} from 'react-native';
+
 
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -7,11 +9,17 @@ const SearchBar = () => {
   const onChangeSearch = query => setSearchQuery(query);
 
   return (
-    <Searchbar
-      placeholder="Search"
-      onChangeText={onChangeSearch}
-      value={searchQuery}
-    />
+    <View style={{flexDirection: 'row', marginTop: 25, marginBottom: 0, alignSelf: 'center'}}>
+      <Searchbar
+        style={{width: '80%', borderRadius: 5}}
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+      />
+      <IconButton icon="filter-outline"
+        size={30}  color={Colors.deepPurple600} style={{alignSelf: 'center'}}
+        />
+    </View>
   );
 };
 

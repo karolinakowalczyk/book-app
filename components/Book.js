@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Avatar, Button, Card, Title, Paragraph, IconButton, Colors } from 'react-native-paper';
-const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 import {Link } from "react-router-native";
 
 const Stars = (props) => {
