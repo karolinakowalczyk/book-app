@@ -66,7 +66,7 @@ async function getRandomBooks(num=20, fullData=false, keys=importantKeysEdition)
     var promises = []
 
     for(var i in numbers){
-        promises.push(getBook(i, fullData, keys))
+        promises.push(getBook(numbers[i], 'M', fullData, keys))
     }
 
     return await Promise.all(promises)
@@ -103,6 +103,6 @@ async function getImageUrl(key, size='S', mode='I'){
 }
 
 //await search({query: 'Tolkien', limit: 1, page: 10})
-//console.log(await getRandomBooks())
+//console.log(await getRandomBooks(2))
 //console.log(await getImageUrl(9780140328721))
 //console.log((await search({query: 'Tolkien', limit: 1, page: 15})))
