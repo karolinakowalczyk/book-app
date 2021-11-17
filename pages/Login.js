@@ -4,6 +4,7 @@ import { StyleSheet, View, Text, Banner } from "react-native";
 import React from "react";
 import BackButton from "../components/BackButton";
 import BottomNav from '../components/BottomNav';
+import dbAdd from "../firebase.js";
 // import { auth } from "./../firebase";
 // import MyContext from "./../Context";
 
@@ -15,6 +16,12 @@ const Login = () => {
 
   const login = () => {
     setRedirect(true);
+    const data = {
+      idDB: 'test',
+      valueDB: 240
+    }
+
+    dbAdd('test', 'InnyTest', data);
     // auth
     //   .signInWithEmailAndPassword(email, password)
     //   .then((loggedUser) => {
