@@ -5,7 +5,8 @@ const numBooks = 35300005
 const query = {
     'book_data_M': 'https://openlibrary.org/editions/OL`M.json',
     'book_data_I': 'https://openlibrary.org/isbn/`.json',
-    'search': 'http://openlibrary.org/search.json?`'
+    'search': 'http://openlibrary.org/search.json?`',
+    'image': 'https://covers.openlibrary.org/b/$key/$value-$size.jpg'
 }
 const importantKeys = [
     'key',
@@ -95,8 +96,13 @@ async function search({query='', name='', author='', page=1, limit=20, fullData=
     return data
 }
 
+async function getImageUrl(key, size='S', mode='I'){
+    if(mode == 'I') mode = 'ISBN'
+    else if(mode == 'M') mode = 'OLID'
+    return query['image'].replace('$key', mode).replace('$value', key).replace('$size', size)
+}
 
 //await search({query: 'Tolkien', limit: 1, page: 10})
 //console.log(await getRandomBooks())
-//console.log(await getBook(9780140328721, 'I'))
+//console.log(await getImageUrl(9780140328721))
 //console.log((await search({query: 'Tolkien', limit: 1, page: 15})))
