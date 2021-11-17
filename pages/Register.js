@@ -20,7 +20,7 @@ const Register = () => {
   };
   const createUser = () => {
     const data = {
-      idDB: 'test',
+      idDB: 'testInny',
       valueDB: 240
     }
     
