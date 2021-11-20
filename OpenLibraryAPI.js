@@ -18,7 +18,8 @@ const importantKeys = [
     'author_name',
     'subject',
     'subject_key',
-    'description'
+    'description',
+    'cover,'
 ]
 
 const importantKeysWork = [
@@ -170,7 +171,7 @@ async function search(filter, value, limit=20, page=1, fullData=false, keys=impo
         let temp = data.docs[entry].key.split('/')
         data.docs[entry].key = temp[temp.length - 1]
 
-        data.docs[entry].cover_url = await getImageUrl(data.docs[entry].edition_key[0])
+        data.docs[entry].cover = await getImageUrl(data.docs[entry].edition_key[0])
     }
 
     return data
