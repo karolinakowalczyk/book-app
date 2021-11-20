@@ -5,8 +5,10 @@ const numBooks = 24999653
 const query = {
     'book_data_M': 'https://openlibrary.org/editions/`.json',
     'book_data_W': 'https://openlibrary.org/works/`.json',
+    'author': 'https://openlibrary.org/authors/`.json',
     'search': 'http://openlibrary.org/search.json?`',
-    'image': 'https://covers.openlibrary.org/b/OLID/$value-$size.jpg'
+    'image': 'https://covers.openlibrary.org/b/OLID/$value-$size.jpg',
+    'cover': 'https://covers.openlibrary.org/b/id/$value-$size.jpg'
 }
 const importantKeys = [
     'key',
@@ -16,6 +18,16 @@ const importantKeys = [
     'author_name',
     'subject',
     'subject_key',
+    'description'
+]
+
+const importantKeysWork = [
+    'key',
+    'title',
+    'subjects',
+    'authors',
+    'covers',
+    'description'
 ]
 
 const importantKeysEdition = [
@@ -30,6 +42,16 @@ const importantKeysEdition = [
     'publish_date',
     'title'
 ]
+
+const importantKeysAuthor = [
+    'name',
+]
+
+async function getAuthor(id, fullData=false, keys=importantKeysAuthor){
+    let data = await fetch(parseQuery('author', id)).then(response => response.json())
+    if(!fullData) data = fetchMostImportantData(data, keys)
+    return data
+}
 
 function fetchMostImportantData(data, keys){
     let parsed = {}
@@ -53,11 +75,28 @@ function getRandomInt(num=1, min=1, max=numBooks){
     return result
 }
 
-async function getBook(id, fullData=false, keys=importantKeys){                           
+async function getBook(id, fullData=false, keys=importantKeysWork){                           
     let data = await fetch(parseQuery('book_data_W', id))  
                         .then(response => response.json())
-    if (!fullData) data = fetchMostImportantData(data, keys)
-    return data
+    
+    let normalizedData = fetchMostImportantData(data, importantKeys)
+    normalizedData.edition = data.edition
+    normalizedData.description = data.description
+    
+    normalizedData.author_name = []
+    normalizedData.author_key = []
+
+    for(let i in data.authors){
+        normalizedData.author_key.push('OL' + data.authors[i].author.key.split('OL')[1])
+        normalizedData.author_name.push((await getAuthor('OL' + data.authors[i].author.key.split('OL')[1]))['name'])
+    }
+
+    normalizedData.subject = data.subjects
+    try {
+    normalizedData.cover = await getImageUrlByCoverId(data.covers[0])
+    } catch {}
+
+    return normalizedData
 }
 
 async function getEdition(id, fullData=false, keys=importantKeysEdition){                           
@@ -67,7 +106,7 @@ async function getEdition(id, fullData=false, keys=importantKeysEdition){
     return data
 } 
 
-async function getRandomBooks(num=20, fullData=false, keys=importantKeysEdition){
+async function getRandomBooks(num=20, fullData=false, keys=importantKeys){
     var numbers = getRandomInt(num=num)
     var promises = []
 
@@ -141,10 +180,15 @@ async function getImageUrl(id, size='M'){
     return query['image'].replace('$value', id).replace('$size', size)
 }
 
+async function getImageUrlByCoverId(id, size='M'){
+    return query['cover'].replace('$value', id).replace('$size', size)
+}
+
+
 //await search({query: 'Tolkien', limit: 1, page: 10})
-//console.log(await getRandomBooks(2))
+console.log(await getRandomBooks(2))
 //console.log(await getImageUrl('OL7353617M'))
-console.log((await search(['title', 'author'], ['Lord of', ['J', 'tolkien']])))
+//console.log((await search(['title', 'author'], ['Lord of', ['J', 'tolkien']])))
 
 /*
 TODO
