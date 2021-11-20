@@ -1,6 +1,6 @@
 import { Button, TextInput } from "react-native-paper";
 import {Link, Redirect } from "react-router-native";
-import { StyleSheet, View, Text, Banner } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import React from "react";
 import BackButton from "../components/BackButton";
 import BottomNav from '../components/BottomNav';

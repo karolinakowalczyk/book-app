@@ -1,5 +1,5 @@
 import React from "react";
-// import { auth } from "../firebase";
+import { dbAdd } from "../firebase.js";
 import { Redirect, Link } from "react-router-native";
 import { TextInput, Button } from "react-native-paper";
 import { View, Text,StyleSheet } from "react-native";
@@ -19,6 +19,12 @@ const Register = () => {
     setValues(newValues);
   };
   const createUser = () => {
+    const data = {
+      idDB: 'testInny',
+      valueDB: 240
+    }
+    
+    dbAdd('users', 'user1', data);
     // if (!values.every((el) => el !== null)) return;
     // auth
     //   .createUserWithEmailAndPassword(values[1], values[3])

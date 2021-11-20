@@ -28,9 +28,9 @@ const app = firebase.initializeApp(firebaseConfig);
 const db = app.firestore()
 const auth = app.auth()
 
-/*async function dbAdd(collectionName, documentName, data) {
+async function dbAdd(collectionName, documentName, data) {
   var z = await db.collection(collectionName).doc(documentName).set(data);
-}*/
+}
 
 /*Testowa funkcja dodająca wartości do bazy
 struktura danych:
@@ -44,6 +44,8 @@ async function dbAdd(collectionName, documentName, data) {
 }
 
 call:
+import { dbAdd } from "../firebase.js";
+
 const data = {
   idDB: 'test',
   valueDB: 240
@@ -53,4 +55,4 @@ dbAdd('test', 'Test1', data);
 
 */
 
-export { db, auth /*, dbAdd*/ }
+export { db, auth , dbAdd }
