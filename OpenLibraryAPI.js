@@ -72,7 +72,7 @@ async function getRandomBooks(num=20, fullData=false, keys=importantKeysEdition)
     var promises = []
 
     for(var i in numbers){
-        promises.push(getBook(numbers[i], fullData, keys))
+        promises.push(getBook('OL' + numbers[i] + 'W', fullData, keys))
     }
 
     return await Promise.all(promises)
