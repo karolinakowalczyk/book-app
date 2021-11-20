@@ -4,7 +4,7 @@ import fetch from "node-fetch"
 const numBooks = 24999653
 const query = {
     'book_data_M': 'https://openlibrary.org/editions/`.json',
-    'book_data_W': 'https://openlibrary.org/editions/`.json',
+    'book_data_W': 'https://openlibrary.org/works/`.json',
     'search': 'http://openlibrary.org/search.json?`',
     'image': 'https://covers.openlibrary.org/b/OLID/$value-$size.jpg'
 }
