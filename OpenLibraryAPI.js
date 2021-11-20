@@ -53,12 +53,19 @@ function getRandomInt(num=1, min=1, max=numBooks){
     return result
 }
 
-async function getBook(id, fullData=false, keys=importantKeysEdition){                           
+async function getBook(id, fullData=false, keys=importantKeys){                           
     let data = await fetch(parseQuery('book_data_W', id))  
                         .then(response => response.json())
     if (!fullData) data = fetchMostImportantData(data, keys)
     return data
 }
+
+async function getEdition(id, fullData=false, keys=importantKeysEdition){                           
+    let data = await fetch(parseQuery('book_data_M', id))  
+                        .then(response => response.json())
+    if (!fullData) data = fetchMostImportantData(data, keys)
+    return data
+} 
 
 async function getRandomBooks(num=20, fullData=false, keys=importantKeysEdition){
     var numbers = getRandomInt(num=num)
