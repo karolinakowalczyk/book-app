@@ -1,5 +1,6 @@
 //import { mdiConsoleNetwork } from "@mdi/js"
 // import fetch, { Request } from "node-fetch"
+import axios from 'axios';
 
 const numBooks = 24999653
 const query = {
@@ -191,36 +192,24 @@ export async function search(filter, value, limit=20, page=1, fullData=false, ke
 
 async function getImageUrl(id, size='M'){
     let url = query['image'].replace('$value', id).replace('$size', size)
-    return checkImage(url)
+    return await checkImage(url)
 }
 
 async function getImageUrlByCoverId(id, size='M'){
     let url = query['cover'].replace('$value', id).replace('$size', size)
-    return checkImage(url)
+    return await checkImage(url)
 }
 
+// async function checkImage(link){
+//     let exist = await axios.get(link);
+//     return exist;
+//     // fetch(link).then(response => response.body._readableState.buffer.length > 1)
+//     // return exist ? link : undefined
+// }
 async function checkImage(link){
-    let exist = await fetch(link).then(res => res);
-        // if (res) {
-        //     return link;
-        // } else {
-        //     return undefined;
-        // }
-        // }
-    
-    return exist;
-       
-    // .then(response =>  {
-    //     // console.log(response)
-    //         if (response) {
-            
-    //          return response
-    //         }
-    //         return false;
-    //     })
-    // return exist ? link : undefined
+    let exist = await axios.get(link).then(response => !response.data.includes('GIF89a'))
+    return exist ? link : undefined
 }
-
 
 //await search({query: 'Tolkien', limit: 1, page: 10})
 //console.log(await getRandomBooks(2))
