@@ -1,20 +1,40 @@
 import * as React from 'react';
-import { View } from 'react-native';
-import { Button, Paragraph, Dialog, Portal, Provider } from 'react-native-paper';
+import { View, Text } from 'react-native';
+import { Button, Paragraph, Dialog, Portal, Provider, TextInput } from 'react-native-paper';
 
-const MyComponent = (props) => {
+const FilterView = (props) => {
+  const [filterValues, setFilterValues] = React.useState(['','','','','','']);
   const visible = props.visible;
   const hideDialog = props.hideDialog;
+  const filters = ['title', 'author', 'subject', 'place', 'person', 'publisher']
+ 
+  const changeFilterValues = (text, idx) => {
+    const newValues = [...filterValues];
+    newValues[idx] = text;
+    setFilterValues(newValues);
+  }
+  const createTextInputs = () => {
+    let tempText = '';
+    return filters.map((el, idx) =>
+      <TextInput
+      style={{marginTop: 5}}
+      dense
+              label={`By ${el}`}
+              onChangeText={(text) => changeFilterValues(text, idx)}
+            />
+    )
+  }
   
 
   return (
-    <Provider>
       <View>
         <Portal>
           <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Title>Alert</Dialog.Title>
+            <Dialog.Title>Filter books</Dialog.Title>
             <Dialog.Content>
-              <Paragraph>This is simple dialog</Paragraph>
+              {/* <Text> */}
+            {createTextInputs()}
+            {/* </Text> */}
             </Dialog.Content>
             <Dialog.Actions>
               <Button onPress={hideDialog}>Done</Button>
@@ -22,8 +42,7 @@ const MyComponent = (props) => {
           </Dialog>
         </Portal>
       </View>
-    </Provider>
   );
 };
 
-export default MyComponent;
+export default FilterView;

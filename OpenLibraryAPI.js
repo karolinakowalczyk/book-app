@@ -1,5 +1,4 @@
 import { mdiConsoleNetwork } from "@mdi/js"
-import fetch from "node-fetch"
 
 const numBooks = 24999653
 const query = {
@@ -19,7 +18,7 @@ const importantKeys = [
     'subject',
     'subject_key',
     'description',
-    'cover,'
+    'cover'
 ]
 
 const importantKeysWork = [
@@ -107,15 +106,25 @@ async function getEdition(id, fullData=false, keys=importantKeysEdition){
     return data
 } 
 
-async function getRandomBooks(num=20, fullData=false, keys=importantKeys){
+export async function getRandomBooks(num=20, fullData=false, keys=importantKeys){
     var numbers = getRandomInt(num=num)
-    var promises = []
+    var books = []
 
     for(var i in numbers){
-        promises.push(getBook('OL' + numbers[i] + 'W', fullData, keys))
+        let offset = 0;
+        while(true) {
+        const book = await getBook('OL' + `${numbers[i] + offset}`  + 'W', fullData, keys);
+        if (book.cover) {
+            books.push(book);
+            break;
+        }
+        else {
+            offset++;
+        }
+        }
     }
 
-    return await Promise.all(promises)
+    return books;
 }
 
 /*
@@ -145,7 +154,7 @@ publisher
 ***
 */
 
-async function search(filter, value, limit=20, page=1, fullData=false, keys=importantKeys){
+export async function search(filter, value, limit=20, page=1, fullData=false, keys=importantKeys){
     let request = ''
     if(Array.isArray(filter)) 
         for(let i in filter){
@@ -187,10 +196,10 @@ async function getImageUrlByCoverId(id, size='M'){
 
 
 //await search({query: 'Tolkien', limit: 1, page: 10})
-console.log(await getRandomBooks(2))
+// console.log(await getRandomBooks(2))
 //console.log(await getImageUrl('OL7353617M'))
 //console.log((await search(['title', 'author'], ['Lord of', ['J', 'tolkien']])))
-
+// console.log(await search('subject', 'Biography'))
 /*
 TODO
 search(filter, value, page=1, limit=20)

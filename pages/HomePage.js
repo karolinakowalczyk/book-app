@@ -10,8 +10,8 @@ const HomePage = () => {
     return (
         <View style={{width: '100%', height: '100%', backgroundColor: Colors.grey200}}>
             <SearchBar />
-            <BooksTab name="Popular" />
-            <BooksTab name="For you" />
+            <BooksTab name="Popular" bookType="Congresses" />
+            <BooksTab name="For you" bookType="Biography" />
         </View>
     );
   };
