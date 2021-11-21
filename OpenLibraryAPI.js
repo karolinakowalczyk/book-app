@@ -1,5 +1,5 @@
-import { mdiConsoleNetwork } from "@mdi/js"
-import fetch, { Request } from "node-fetch"
+//import { mdiConsoleNetwork } from "@mdi/js"
+//import fetch, { Request } from "node-fetch"
 
 const numBooks = 24999653
 const query = {
@@ -210,7 +210,7 @@ async function checkImage(link){
 //console.log(await getImageUrl('OL7353617M'))
 //console.log((await search('title', 'JANE EYRE')))
 //console.log(await getAuthor('OL34184A'))
-console.log(await getBook('OL7353617M'))
+//console.log(await getBook('OL7353617M'))
 /*
 TODO
 search(filter, value, page=1, limit=20)
