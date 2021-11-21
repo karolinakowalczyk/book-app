@@ -21,7 +21,8 @@
     "react-native-paper": "^4.9.2",
     "react-native-vector-icons": "^9.0.0",
     "react-native-web": "~0.13.12",
-    "react-router-native": "^5.2.1"
+    "react-router-native": "^5.2.1",
+    "watchman": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

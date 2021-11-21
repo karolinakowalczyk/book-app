@@ -1,4 +1,5 @@
-import { mdiConsoleNetwork } from "@mdi/js"
+//import { mdiConsoleNetwork } from "@mdi/js"
+//import fetch, { Request } from "node-fetch"
 
 const numBooks = 24999653
 const query = {
@@ -18,7 +19,7 @@ const importantKeys = [
     'subject',
     'subject_key',
     'description',
-    'cover'
+    'cover',
 ]
 
 const importantKeysWork = [
@@ -40,7 +41,8 @@ const importantKeysEdition = [
     'isbn_13',
     'genres',
     'publish_date',
-    'title'
+    'title',
+    'works'
 ]
 
 const importantKeysAuthor = [
@@ -48,6 +50,12 @@ const importantKeysAuthor = [
 ]
 
 async function getAuthor(id, fullData=false, keys=importantKeysAuthor){
+    let data = await fetch(parseQuery('author', id)).then(response => response.json())
+    if(!fullData) data = fetchMostImportantData(data, keys)
+    return data
+}
+
+async function getBookAuthor(id, fullData=false, keys=importantKeysAuthor){
     let data = await fetch(parseQuery('author', id)).then(response => response.json())
     if(!fullData) data = fetchMostImportantData(data, keys)
     return data
@@ -87,8 +95,13 @@ async function getBook(id, fullData=false, keys=importantKeysWork){
     normalizedData.author_key = []
 
     for(let i in data.authors){
-        normalizedData.author_key.push('OL' + data.authors[i].author.key.split('OL')[1])
-        normalizedData.author_name.push((await getAuthor('OL' + data.authors[i].author.key.split('OL')[1]))['name'])
+        try{
+            normalizedData.author_key.push('OL' + data.authors[i].author.key.split('OL')[1])
+            normalizedData.author_name.push((await getAuthor('OL' + data.authors[i].author.key.split('OL')[1]))['name'])
+        } catch{
+            normalizedData.author_key.push('OL' + data.authors[i].key.split('OL')[1])
+            normalizedData.author_name.push((await getAuthor('OL' + data.authors[i].key.split('OL')[1]))['name'])
+        }
     }
 
     normalizedData.subject = data.subjects
@@ -106,25 +119,15 @@ async function getEdition(id, fullData=false, keys=importantKeysEdition){
     return data
 } 
 
-export async function getRandomBooks(num=20, fullData=false, keys=importantKeys){
+async function getRandomBooks(num=20, fullData=false, keys=importantKeys){
     var numbers = getRandomInt(num=num)
-    var books = []
+    var promises = []
 
     for(var i in numbers){
-        let offset = 0;
-        while(true) {
-        const book = await getBook('OL' + `${numbers[i] + offset}`  + 'W', fullData, keys);
-        if (book.cover) {
-            books.push(book);
-            break;
-        }
-        else {
-            offset++;
-        }
-        }
+        promises.push(getBook('OL' + numbers[i] + 'W', fullData, keys))
     }
 
-    return books;
+    return await Promise.all(promises)
 }
 
 /*
@@ -154,7 +157,7 @@ publisher
 ***
 */
 
-export async function search(filter, value, limit=20, page=1, fullData=false, keys=importantKeys){
+async function search(filter, value, limit=20, page=1, fullData=false, keys=importantKeys){
     let request = ''
     if(Array.isArray(filter)) 
         for(let i in filter){
@@ -187,22 +190,36 @@ export async function search(filter, value, limit=20, page=1, fullData=false, ke
 }
 
 async function getImageUrl(id, size='M'){
-    return query['image'].replace('$value', id).replace('$size', size)
+    let url = query['image'].replace('$value', id).replace('$size', size)
+    return await checkImage(url)
 }
 
 async function getImageUrlByCoverId(id, size='M'){
-    return query['cover'].replace('$value', id).replace('$size', size)
+    let url = query['cover'].replace('$value', id).replace('$size', size)
+    return await checkImage(url)
+}
+
+async function checkImage(link){
+    let exist = await fetch(link).then(response => response.body._readableState.buffer.length > 1)
+    return exist ? link : undefined
 }
 
 
 //await search({query: 'Tolkien', limit: 1, page: 10})
-// console.log(await getRandomBooks(2))
+//console.log(await getRandomBooks(2))
 //console.log(await getImageUrl('OL7353617M'))
-//console.log((await search(['title', 'author'], ['Lord of', ['J', 'tolkien']])))
-// console.log(await search('subject', 'Biography'))
+//console.log((await search('title', 'JANE EYRE')))
+//console.log(await getAuthor('OL34184A'))
+//console.log(await getBook('OL7353617M'))
 /*
 TODO
 search(filter, value, page=1, limit=20)
 Work ID + pierwsze wydanie
 imageurl w search
 */
+const OpenLibraryAPI = {
+    getBook,
+    getAuthor
+};
+
+export default OpenLibraryAPI;
