@@ -1,5 +1,6 @@
-//import { mdiConsoleNetwork } from "@mdi/js"
-//import fetch, { Request } from "node-fetch"
+import { mdiConsoleNetwork } from "@mdi/js"
+import axios from "axios"
+import fetch, { Request } from "node-fetch"
 
 const numBooks = 24999653
 const query = {
@@ -199,16 +200,20 @@ async function getImageUrlByCoverId(id, size='M'){
     return await checkImage(url)
 }
 
+// async function checkImage(link){
+//     let exist = await fetch(link).then(response => response.body._readableState.buffer.length > 1)
+//     return exist ? link : undefined
+// }
+
 async function checkImage(link){
-    let exist = await fetch(link).then(response => response.body._readableState.buffer.length > 1)
+    let exist = await axios.get(link).then(response => !response.data.includes('GIF89a'))
     return exist ? link : undefined
 }
 
-
 //await search({query: 'Tolkien', limit: 1, page: 10})
 //console.log(await getRandomBooks(2))
-//console.log(await getImageUrl('OL7353617M'))
-//console.log((await search('title', 'JANE EYRE')))
+console.log(await getImageUrl('OL26348311M'))
+//console.log(await search('subject', 'English', 1, 1))
 //console.log(await getAuthor('OL34184A'))
 //console.log(await getBook('OL7353617M'))
 /*
@@ -217,9 +222,3 @@ search(filter, value, page=1, limit=20)
 Work ID + pierwsze wydanie
 imageurl w search
 */
-const OpenLibraryAPI = {
-    getBook,
-    getAuthor
-};
-
-export default OpenLibraryAPI;
