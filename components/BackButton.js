@@ -4,6 +4,7 @@ import { StyleSheet } from "react-native";
 
 import React from "react";
 const BackButton = () => {
+  //jeżeli user zalogowany to niech przenosi to="/home"
   return (
     <Link
         to="/"

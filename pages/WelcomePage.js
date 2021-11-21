@@ -1,9 +1,8 @@
 import { Avatar, Button  } from "react-native-paper";
-import {Link, Redirect } from "react-router-native";
+import {Link } from "react-router-native";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import React from "react";
-
-const MainPage = () => {
+const WelcomePage = () => {
 
   return (
       <View style={styles.container}>
@@ -18,7 +17,7 @@ const MainPage = () => {
           <Button mode="contained" style={styles.subBtn}>
             <Text style={styles.subBtnText}>ZAREJESTRUJ SIĘ</Text>
           </Button>
-        </Link>
+      </Link>
     </View>
   );
 };
@@ -28,8 +27,8 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       marginTop: 20,
-      backgroundColor: '#d7e0ff'
-      //justifyContent: 'center',
+      backgroundColor: '#d7e0ff',
+      justifyContent: 'center',
     },
   image: {
       marginTop: 50,
@@ -51,4 +50,4 @@ const styles = StyleSheet.create({
 });
 
   
-export default MainPage;
+export default WelcomePage;
