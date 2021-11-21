@@ -4,16 +4,19 @@ import React from 'react';
 import { Colors, Title } from "react-native-paper";
 import SearchBar from "../components/SearchBar";
 import BooksTab from '../components/BooksTab';
+import loadBooks from "../utils/loadBooks";
 
 
-const HomePage = () => {
+const FilteredBooksPage = (props) => {
+    const filterType = props.filterType;
+    const filterValue = props.filterValue;
+    
     return (
         <View style={{width: '100%', height: '100%', backgroundColor: Colors.grey200}}>
             <SearchBar />
-            <BooksTab name="Popular" filterType={["subject"]} filterValue="Congresses" />
-            <BooksTab name="For you" filterType={["subject"]} filterValue="Biography" />
+            
         </View>
     );
   };
 
-  export default HomePage;
+  export default FilteredBooksPage;

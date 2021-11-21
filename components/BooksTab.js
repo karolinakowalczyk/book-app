@@ -6,38 +6,24 @@ import { Colors, Title } from "react-native-paper";
 import {Link } from "react-router-native";
 import {search} from "../OpenLibraryAPI";
 import { ActivityIndicator} from 'react-native-paper';
-
-const loadBooks = async (bookType, page=1, itemsPerPage=3) => {
-    const books = await search('subject', bookType, itemsPerPage, page);
-    
-    const booksComponents = [];
-
-    for (let i=0; i < itemsPerPage; i++) {
-        //TO DO: add book props or maybe rewrite whole function
-        booksComponents.push(
-        <View key={i} style={{flex: 0.4, alignItems: 'center'}}>
-            <Link to="/book-details">
-                <Book book={books.docs[i]}/>
-            </Link>
-        </View>
-        )
-    }
-    return booksComponents;
-}
+import loadBooks from "../utils/loadBooks";
 
 const BooksTab = (props) => {
+    const tabName = props.name;
+    const filterType = props.filterType;
+    const page = props.page;
+    const limit = props.limit;
+    const filterValue = props.filterValue;
     const [books, setBooks] = useState();
+
     useEffect(() => {
         async function fetchBooks() {
-          let response = await loadBooks(props.bookType);
+          let response = await loadBooks(filterType, filterValue);
           setBooks(response);
         }
         fetchBooks()
       }, [])
 
-
-    const tabName = props.name;
-    const bookType = props.bookType;
     return ( 
     <View style={{marginTop: 20, width: '100%', height: 240}} >
     <Title style={{marginLeft: 10, color: Colors.purple800}}>

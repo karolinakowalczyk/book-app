@@ -49,7 +49,10 @@ const BookDetails = () => {
                             </View>
                             <View style={styles.row}>
                             <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>by </Text>
-                            {book.author_name.map(author => <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>{author} </Text>)}
+                            <Text>
+                            {book.author_name}
+                            </Text>
+                             {/* {book.author_name.map(author => <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>{author} </Text>)} */}
                             </View>
                             <Text style={{ color: Colors.grey600, fontSize: 12, marginTop: 5 }}>{book.description}</Text>
                             {/*<Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>by {book.author_name[0]} {book.author_name[0]}</Text>*/}

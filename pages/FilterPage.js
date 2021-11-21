@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { View, Text } from 'react-native';
 import { Button, Paragraph, Dialog, Portal, Provider, TextInput } from 'react-native-paper';
+import FilteredBooksPage from './FilteredBooksPage';
 
 const FilterView = (props) => {
+  const [redirect, setRedirect] = React.useState(false);
   const [filterValues, setFilterValues] = React.useState(['','','','','','']);
   const visible = props.visible;
   const hideDialog = props.hideDialog;
@@ -13,15 +15,32 @@ const FilterView = (props) => {
     newValues[idx] = text;
     setFilterValues(newValues);
   }
+  
+  const filter = () => {
+    const trueFilterValues = filterValues.filter(el => el !== '')
+    if (trueFilterValues) {
+    hideDialog();
+    setRedirect(true)
+    }
+    else {
+      hideDialog();
+    }
+  }
+
   const createTextInputs = () => {
     return filters.map((el, idx) =>
       <TextInput
-      style={{marginTop: 5}}
-      dense
-              label={`By ${el}`}
-              onChangeText={(text) => changeFilterValues(text, idx)}
-            />
+        key={idx}
+        style={{marginTop: 5}}
+        dense
+        label={`By ${el}`}
+        onChangeText={(text) => changeFilterValues(text, idx)}
+      />
     )
+  }
+
+  if (redirect) {
+    return <Link><FilteredBooksPage filterType={filters} filterValues={filterValues} /></Link>
   }
   
 
@@ -36,7 +55,7 @@ const FilterView = (props) => {
             {/* </Text> */}
             </Dialog.Content>
             <Dialog.Actions>
-              <Button onPress={hideDialog}>Done</Button>
+              <Button onPress={filter}>Filter!</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>

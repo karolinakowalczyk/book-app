@@ -25,7 +25,7 @@ const SearchBar = () => {
       <IconButton icon="filter-outline"
         size={30}  color={Colors.deepPurple600} style={{alignSelf: 'center'}} onPress={showDialog}
         />
-        {/* <FilterView hideDialog={hideDialog} visible={visibleFilterDialog} /> */}
+        <FilterView hideDialog={hideDialog} visible={visibleFilterDialog} />
     </View>
   );
 };
