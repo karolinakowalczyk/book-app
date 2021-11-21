@@ -3,6 +3,7 @@ import React from 'react';
 import BackButton from "../components/BackButton";
 import { Button } from 'react-native-paper';
 import Book from "../components/Book"
+import LoadMore from "../components/LoadMore"
 
 const UserBooksPage = () => {
   const [btnSelected, setBtnSelected] = React.useState(1);
@@ -35,11 +36,7 @@ const UserBooksPage = () => {
     }
     return books;
   }
-
-  const loadMoreBooks = () => {
-    
-    
-  }
+  
     return (
       <View style={[styles.userBooksContainer, {
       flexDirection: "column"
@@ -66,21 +63,21 @@ const UserBooksPage = () => {
             </Button>
         </View>
         {btnSelected === 1 &&
-          <View style={{ flexDirection: 'row', marginTop: 20, flex: 1, flexWrap: 'wrap', justifyContent: 'center' }} >
+          <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 25, flex: 1, flexWrap: 'wrap', justifyContent: 'center' }} >
           {loadInProgressBooks()}
           </View>
         }
         {btnSelected === 2 &&
-          <View style={{ flexDirection: 'row', marginTop: 20, flex: 1, flexWrap: 'wrap', justifyContent: 'center' }} >
+          <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 25, flex: 1, flexWrap: 'wrap', justifyContent: 'center' }} >
             {loadInReadBooks()}
           </View>
         }
         {btnSelected === 3 &&
-          <View style={{ flexDirection: 'row', marginTop: 20, flex: 1, flexWrap: 'wrap', justifyContent: 'center' }} >
+          <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 25, flex: 1, flexWrap: 'wrap', justifyContent: 'center' }} >
             {loadInPlannedBooks()}
           </View>
         }
-        <Button onPress={loadMoreBooks()} style={{marginTop: 60, marginBottom: 5, marginLeft: 23, marginRight: 23}} mode="contained">LOAD MORE</Button>
+        <LoadMore></LoadMore>
     </View>
     );
   };

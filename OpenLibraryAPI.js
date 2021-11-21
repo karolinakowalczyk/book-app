@@ -217,3 +217,9 @@ search(filter, value, page=1, limit=20)
 Work ID + pierwsze wydanie
 imageurl w search
 */
+const OpenLibraryAPI = {
+    getBook,
+    getAuthor
+};
+
+export default OpenLibraryAPI;
