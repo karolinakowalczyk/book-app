@@ -1,6 +1,3 @@
-import { mdiConsoleNetwork } from "@mdi/js"
-import fetch from "node-fetch"
-
 const numBooks = 24999653
 const query = {
     'book_data_M': 'https://openlibrary.org/editions/`.json',
@@ -187,7 +184,7 @@ async function getImageUrlByCoverId(id, size='M'){
 
 
 //await search({query: 'Tolkien', limit: 1, page: 10})
-console.log(await getRandomBooks(2))
+//console.log(await getRandomBooks(2))
 //console.log(await getImageUrl('OL7353617M'))
 //console.log((await search(['title', 'author'], ['Lord of', ['J', 'tolkien']])))
 
@@ -197,3 +194,9 @@ search(filter, value, page=1, limit=20)
 Work ID + pierwsze wydanie
 imageurl w search
 */
+const OpenLibraryAPI = {
+    getBook,
+    getAuthor
+};
+
+export default OpenLibraryAPI;
