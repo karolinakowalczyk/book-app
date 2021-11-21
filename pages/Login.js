@@ -4,13 +4,14 @@ import { StyleSheet, View, Text } from "react-native";
 import React from "react";
 import BackButton from "../components/BackButton";
 import BottomNav from '../components/BottomNav';
+import { auth, dbAdd } from "../firebase.js";
 //import dbAdd from "../firebase.js";
 // import { auth } from "./../firebase";
-// import MyContext from "./../Context";
+import MyContext from "../Context.js";
 
 const Login = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState("aniat@gmail.com");
+  const [password, setPassword] = React.useState("hah11113123");
   const [redirect, setRedirect] = React.useState(false);
   // const { currentUser, setCurrentUser } = React.useContext(MyContext);
 
@@ -22,17 +23,18 @@ const Login = () => {
     }
 
     dbAdd('test', 'InnyTest', data);*/
-    // auth
-    //   .signInWithEmailAndPassword(email, password)
-    //   .then((loggedUser) => {
-    //     // console.log(loggedUser);
-    //     // setCurrentUser(loggedUser.user.uid);
-    //     // console.log(currentUser);
-    //     setRedirect(true);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((loggedUser) => {
+        console.log(loggedUser);
+        // setCurrentUser(loggedUser.user.uid);
+        // console.log(currentUser);
+        setRedirect(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        setRedirect(false);
+      });
   };
   if (redirect) {
     return <BottomNav />;
@@ -63,7 +65,7 @@ const Login = () => {
             type="text"
             variant="outlined"
             placeholder="E-mail"
-            onInput={(e) => setEmail(e.target.value)}
+            onChangeText={(newEmail) => setEmail(newEmail)}
             value={email}
             style={{ marginBottom: 10 }}
           />
@@ -72,8 +74,9 @@ const Login = () => {
             type="password"
             variant="outlined"
             placeholder="Hasło"
-            onInput={(e) => setPassword(e.target.value)}
+            onChangeText={(newPwd) => setPassword(newPwd)}
             value={password}
+            secureTextEntry={true}
           />
         </View>
         <Link

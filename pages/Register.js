@@ -1,8 +1,10 @@
 import React from "react";
-import { dbAdd } from "../firebase.js";
+import { auth, dbAdd } from "../firebase.js";
 import { Redirect, Link } from "react-router-native";
 import { TextInput, Button } from "react-native-paper";
 import { View, Text,StyleSheet } from "react-native";
+
+import BottomNav from '../components/BottomNav';
 // import MyContext from "../Context";
 
 import BackButton from "../components/BackButton";
@@ -12,57 +14,68 @@ const Register = () => {
   const [values, setValues] = React.useState(["", "", "", "", "", ""]);
   const [redirect, setRedirect] = React.useState(false);
 //   const { currentUser, setCurrentUser } = React.useContext(MyContext);
-  const handleInput = (event) => {
-    const idx = event.target.getAttribute("name");
+  const handleInput = (text, index) => {
     const newValues = [...values];
-    newValues[idx] = event.target.value;
+    newValues[index] = text;
     setValues(newValues);
   };
   const createUser = () => {
-    const data = {
-      idDB: 'testInny',
-      valueDB: 240
-    }
+    // const data = {
+    //   idDB: 'testInny',
+    //   valueDB: 240
+    // }
     
-    dbAdd('users', 'user1', data);
-    // if (!values.every((el) => el !== null)) return;
-    // auth
-    //   .createUserWithEmailAndPassword(values[1], values[3])
-    //   .then(() => {
-    //     auth
-    //       .signInWithEmailAndPassword(values[1], values[3])
-    //       .then((loggedUser) => {
-    //         loggedUser.user.updateProfile({
-    //           displayName: `${values[0]} ${values[2]}`,
-    //         });
-    //         // setCurrentUser(loggedUser);
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //       });
-    //     setRedirect(true);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    // dbAdd('users', 'user1', data);
+    if (!values.every((el) => el !== null)) return;
+    auth
+      .createUserWithEmailAndPassword(values[2], values[3])
+      .then(() => {
+        auth
+          .signInWithEmailAndPassword(values[2], values[3])
+          .then((loggedUser) => {
+            loggedUser.user.updateProfile({
+              displayName: `${values[0]} ${values[1]}`,
+            });
+             //setCurrentUser(loggedUser);
+          })
+          .catch((err) => {
+            console.log(err);
+            setRedirect(false);
+          });
+        setRedirect(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        setRedirect(false);
+      })
+
   };
   const InputCreate = () => {
     const renderInputs = labels.map((el, index) => {
       return (
         <View style={styles.itemReady} key={index}>
-            <TextInput
+            {index == 3 &&
+                <TextInput
+                value={values[index]}
+                onChangeText={(text) => handleInput(text, index)}
+                id={el}
+                label={el}
+                secureTextEntry={true}
+              />
+            }
+            {index !=3 && <TextInput
               value={values[index]}
-              onInput={handleInput}
+              onChangeText={(text) => handleInput(text, index)}
               id={el}
               label={el}
-            />
+            />}
         </View>
       );
     });
     return renderInputs;
   };
   if (redirect) {
-    return <Redirect to="/" />;
+    return <BottomNav />;
   }
 
   return (

@@ -2,9 +2,11 @@ import { StyleSheet, View, Text, Banner } from "react-native";
 import React from 'react';
 import BackButton from "../components/BackButton";
 import { Avatar, Colors, Button } from 'react-native-paper';
+import { auth } from "../firebase.js";
 
 
 const ProfilePage = () => {
+    
     return (
     <View style={[styles.profileContainer, {
       flexDirection: "column"
@@ -13,7 +15,7 @@ const ProfilePage = () => {
         <View style={styles.row}>
             <Avatar.Image size={120} source={require('../assets/images/reading.png')}  style={styles.profileImg} />
             <View style={styles.column}>
-                <Text style={{color: Colors.purple900, fontSize: 36}}>Anna Nowak</Text>
+                <Text style={{color: Colors.purple900, fontSize: 36}}>{ auth.currentUser.displayName }</Text>
                 <Text style={{ color: Colors.grey600, fontSize: 16, marginTop: 5 }}>Total reading time: 210 h</Text>
             </View>
             </View>
