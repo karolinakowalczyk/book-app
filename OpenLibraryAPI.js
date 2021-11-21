@@ -55,6 +55,12 @@ async function getAuthor(id, fullData=false, keys=importantKeysAuthor){
     return data
 }
 
+async function getBookAuthor(id, fullData=false, keys=importantKeysAuthor){
+    let data = await fetch(parseQuery('author', id)).then(response => response.json())
+    if(!fullData) data = fetchMostImportantData(data, keys)
+    return data
+}
+
 function fetchMostImportantData(data, keys){
     let parsed = {}
     for(let i in keys) parsed[keys[i]] = data[keys[i]]
@@ -89,8 +95,13 @@ async function getBook(id, fullData=false, keys=importantKeysWork){
     normalizedData.author_key = []
 
     for(let i in data.authors){
-        normalizedData.author_key.push('OL' + data.authors[i].author.key.split('OL')[1])
-        normalizedData.author_name.push((await getAuthor('OL' + data.authors[i].author.key.split('OL')[1]))['name'])
+        try{
+            normalizedData.author_key.push('OL' + data.authors[i].author.key.split('OL')[1])
+            normalizedData.author_name.push((await getAuthor('OL' + data.authors[i].author.key.split('OL')[1]))['name'])
+        } catch{
+            normalizedData.author_key.push('OL' + data.authors[i].key.split('OL')[1])
+            normalizedData.author_name.push((await getAuthor('OL' + data.authors[i].key.split('OL')[1]))['name'])
+        }
     }
 
     normalizedData.subject = data.subjects
@@ -197,8 +208,9 @@ async function checkImage(link){
 //await search({query: 'Tolkien', limit: 1, page: 10})
 //console.log(await getRandomBooks(2))
 //console.log(await getImageUrl('OL7353617M'))
-console.log((await search('title', 'JANE EYRE')))
-
+//console.log((await search('title', 'JANE EYRE')))
+//console.log(await getAuthor('OL34184A'))
+console.log(await getBook('OL7353617M'))
 /*
 TODO
 search(filter, value, page=1, limit=20)
