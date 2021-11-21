@@ -19,10 +19,11 @@ const Book = (props) => {
   const authorName = props.book.author_name[0];
   const title = props.book.title;
   const cover = props.book.cover;
+  console.log(cover)
 
   return (
       <Card style={{width: '85%'}}>
-      <Card.Cover style={{width: '100%', height: 100}} source={{ uri: cover ? cover : 'https://picsum.photos/200/300' }} />
+      <Card.Cover style={{width: '100%', height: 100}} source={{ uri:  'https://picsum.photos/200/300' }} />
       <Card.Content style={{marginTop: 10, paddingBottom: 5}}>
         <Text numberOfLines={1} style={{color: Colors.purple900, fontSize: 12}}>{title}</Text>
         <Text numberOfLines={2} style={{color: Colors.grey600, fontSize: 9, marginTop: 5, height: 22}}>by {authorName}</Text>

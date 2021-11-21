@@ -1,5 +1,5 @@
 //import { mdiConsoleNetwork } from "@mdi/js"
-//import fetch, { Request } from "node-fetch"
+// import fetch, { Request } from "node-fetch"
 
 const numBooks = 24999653
 const query = {
@@ -157,7 +157,7 @@ publisher
 ***
 */
 
-async function search(filter, value, limit=20, page=1, fullData=false, keys=importantKeys){
+export async function search(filter, value, limit=20, page=1, fullData=false, keys=importantKeys){
     let request = ''
     if(Array.isArray(filter)) 
         for(let i in filter){
@@ -174,7 +174,7 @@ async function search(filter, value, limit=20, page=1, fullData=false, keys=impo
     }
     request += 'page=' + page + '&limit=' + limit
     request = parseQuery('search', request)
-    console.log(request)
+ 
 
     let data = await fetch(request).then(response => response.json())
     if (!fullData) for (let entry in data.docs) {
@@ -191,17 +191,34 @@ async function search(filter, value, limit=20, page=1, fullData=false, keys=impo
 
 async function getImageUrl(id, size='M'){
     let url = query['image'].replace('$value', id).replace('$size', size)
-    return await checkImage(url)
+    return checkImage(url)
 }
 
 async function getImageUrlByCoverId(id, size='M'){
     let url = query['cover'].replace('$value', id).replace('$size', size)
-    return await checkImage(url)
+    return checkImage(url)
 }
 
 async function checkImage(link){
-    let exist = await fetch(link).then(response => response.body._readableState.buffer.length > 1)
-    return exist ? link : undefined
+    let exist = await fetch(link).then(res => res);
+        // if (res) {
+        //     return link;
+        // } else {
+        //     return undefined;
+        // }
+        // }
+    
+    return exist;
+       
+    // .then(response =>  {
+    //     // console.log(response)
+    //         if (response) {
+            
+    //          return response
+    //         }
+    //         return false;
+    //     })
+    // return exist ? link : undefined
 }
 
 
@@ -219,7 +236,7 @@ imageurl w search
 */
 const OpenLibraryAPI = {
     getBook,
-    getAuthor
+    getAuthor,
 };
 
 export default OpenLibraryAPI;

@@ -14,7 +14,6 @@ const FilterView = (props) => {
     setFilterValues(newValues);
   }
   const createTextInputs = () => {
-    let tempText = '';
     return filters.map((el, idx) =>
       <TextInput
       style={{marginTop: 5}}

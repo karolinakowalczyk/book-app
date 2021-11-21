@@ -4,11 +4,12 @@ import { useEffect } from "react";
 import React, { useState } from 'react';
 import { Colors, Title } from "react-native-paper";
 import {Link } from "react-router-native";
-import { getRandomBooks, search } from "../OpenLibraryAPI";
+import {search} from "../OpenLibraryAPI";
 import { ActivityIndicator} from 'react-native-paper';
 
 const loadBooks = async (bookType, page=1, itemsPerPage=3) => {
     const books = await search('subject', bookType, itemsPerPage, page);
+    
     const booksComponents = [];
 
     for (let i=0; i < itemsPerPage; i++) {
