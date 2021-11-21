@@ -1,6 +1,8 @@
 import { StyleSheet, View, Text, Banner } from "react-native";
 import React from 'react';
 import BackButton from "../components/BackButton";
+
+import { auth } from "../firebase.js"; 
 import { Avatar, Colors, Button, IconButton } from 'react-native-paper';
 import Book from "../components/Book";
 import LoadMore from "../components/LoadMore";
@@ -30,7 +32,7 @@ const ProfilePage = () => {
         <View style={styles.row}>
             <Avatar.Image size={120} source={require('../assets/images/reading.png')}  style={styles.profileImg} />
             <View style={styles.column}>
-                <Text style={{color: Colors.purple900, fontSize: 36}}>Anna Nowak</Text>
+                <Text style={{color: Colors.purple900, fontSize: 36}}>{ auth.currentUser.displayName }</Text>
                 <Text style={{ color: Colors.grey600, fontSize: 16, marginTop: 5 }}>Całkowity czas czytania: 210 h</Text>
             </View>
         </View>

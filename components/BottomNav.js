@@ -6,9 +6,13 @@ import ProfilePage from '../pages/ProfilePage';
 import UserBooksPage from '../pages/UserBooksPage';
 import PlannerPage from '../pages/PlannerPage';
 import WelcomePage from '../pages/WelcomePage';
+import { auth } from '../firebase.js';
 
 
-const LogoutRoute = () => <Redirect to="/" exact />
+const LogoutRoute = () => {
+  auth.signOut();
+  return <Redirect to="/" exact />
+}
 
 const MyComponent = () => {
   const [index, setIndex] = React.useState(0);
