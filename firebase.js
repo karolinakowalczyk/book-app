@@ -55,4 +55,4 @@ dbAdd('test', 'Test1', data);
 
 */
 
-export { db, auth , dbAdd }
+export { db , app , auth , dbAdd }
