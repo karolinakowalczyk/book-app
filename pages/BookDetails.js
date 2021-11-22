@@ -47,12 +47,14 @@ const BookDetails = () => {
                                 <IconButton icon="heart" color={Colors.pink200} size={40} style={{ margin: -4, padding: 0 }} onPress={() => likeBook()} />
                                 : <IconButton icon="heart-outline" color={Colors.pink200} size={40} style={{ margin: -4, padding: 0 }} onPress={() => likeBook()} />}
                             </View>
-                            <View style={styles.row}>
+                            {/*<View style={styles.row}>
                             <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>by </Text>
                             {book.author_name.map(author => <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>{author} </Text>)}
-                            </View>
+                                </View>*/
+                            /*<Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>by {book.author_name[0]} {book.author_name[0]}</Text>*/}
+                            <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>by Dahl Roald</Text>
                             <Text style={{ color: Colors.grey600, fontSize: 12, marginTop: 5 }}>{book.description}</Text>
-                            {/*<Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>by {book.author_name[0]} {book.author_name[0]}</Text>*/}
+                            
                             <BigStars />
                             <Button icon="plus" mode="outlined"  style={{ marginTop: 10 }} onPress={() => addToLibrary()}>
                                 Dodaj do biblioteki

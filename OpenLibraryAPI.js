@@ -1,6 +1,6 @@
 import { mdiConsoleNetwork } from "@mdi/js"
 import axios from "axios"
-import fetch, { Request } from "node-fetch"
+//import fetch, { Request } from "node-fetch"
 
 const numBooks = 24999653
 const query = {
@@ -175,7 +175,7 @@ async function search(filter, value, limit=20, page=1, fullData=false, keys=impo
     }
     request += 'page=' + page + '&limit=' + limit
     request = parseQuery('search', request)
-    console.log(request)
+    //console.log(request)
 
     let data = await fetch(request).then(response => response.json())
     if (!fullData) for (let entry in data.docs) {
@@ -212,7 +212,7 @@ async function checkImage(link){
 
 //await search({query: 'Tolkien', limit: 1, page: 10})
 //console.log(await getRandomBooks(2))
-console.log(await getImageUrl('OL26348311M'))
+//console.log(await getImageUrl('OL26348311M'))
 //console.log(await search('subject', 'English', 1, 1))
 //console.log(await getAuthor('OL34184A'))
 //console.log(await getBook('OL7353617M'))
@@ -222,3 +222,10 @@ search(filter, value, page=1, limit=20)
 Work ID + pierwsze wydanie
 imageurl w search
 */
+
+const OpenLibraryAPI = {
+  getBook
+}
+
+
+export default OpenLibraryAPI;
