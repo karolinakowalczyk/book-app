@@ -51,22 +51,15 @@ const BookDetails = () => {
                             </View>
                             {/*<View style={styles.row}>
                             <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>by </Text>
-<<<<<<< HEAD
-                            {book.author_name.map(author => <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>{author} </Text>)}
-                                </View>*/
-                            /*<Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>by {book.author_name[0]} {book.author_name[0]}</Text>*/}
-                            <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>by Dahl Roald</Text>
-                            <Text style={{ color: Colors.grey600, fontSize: 12, marginTop: 5 }}>{book.description}</Text>
-                            
-=======
+<
                             {/* <Text>
                             {book.author_name}
                             </Text> */}
+                            <View>
                               <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>{book.author_name ? book.author_name : "Autor nieznany"} </Text>
                             </View>
                             <Text style={{ color: Colors.grey600, fontSize: 12, marginTop: 5 }}>{ book.description ? book.description : "Oops! Autor nie przygotował opisu tej ksiąki!"}</Text>
                             {/*<Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>by {book.author_name[0]} {book.author_name[0]}</Text>*/}
->>>>>>> b5579a144bf5f76c9eb62c517cd084765f394f8b
                             <BigStars />
                             <Button icon="plus" mode="outlined"  style={{ marginTop: 10 }} onPress={() => addToLibrary()}>
                                 Dodaj do biblioteki
