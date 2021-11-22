@@ -4,9 +4,9 @@ import { Button, Paragraph, Dialog, Portal, Provider, TextInput } from 'react-na
 import FilteredBooksPage from './FilteredBooksPage';
 
 const FilterView = (props) => {
-  const [redirect, setRedirect] = React.useState(false);
   const [filterValues, setFilterValues] = React.useState(['','','','','','']);
   const visible = props.visible;
+  const setFilters = props.setFilters;
   const hideDialog = props.hideDialog;
   const filters = ['title', 'author', 'subject', 'place', 'person', 'publisher']
  
@@ -20,7 +20,7 @@ const FilterView = (props) => {
     const trueFilterValues = filterValues.filter(el => el !== '')
     if (trueFilterValues) {
     hideDialog();
-    setRedirect(true)
+    setFilters(filterValues);
     }
     else {
       hideDialog();
@@ -38,12 +38,7 @@ const FilterView = (props) => {
       />
     )
   }
-
-  if (redirect) {
-    return <Link><FilteredBooksPage filterType={filters} filterValues={filterValues} /></Link>
-  }
   
-
   return (
       <View>
         <Portal>

@@ -4,7 +4,7 @@ import {View} from 'react-native';
 import FilterView from '../pages/FilterPage';
 
 
-const SearchBar = () => {
+const SearchBar = (props) => {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [visibleFilterDialog, setVisibleFilterDialog] = React.useState(false);
 
@@ -25,7 +25,7 @@ const SearchBar = () => {
       <IconButton icon="filter-outline"
         size={30}  color={Colors.deepPurple600} style={{alignSelf: 'center'}} onPress={showDialog}
         />
-        <FilterView hideDialog={hideDialog} visible={visibleFilterDialog} />
+        <FilterView hideDialog={hideDialog} setFilters={props.setFilters} visible={visibleFilterDialog} />
     </View>
   );
 };

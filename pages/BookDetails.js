@@ -10,18 +10,20 @@ import { Colors, Card, IconButton, Button } from "react-native-paper";
 import BigStars from "../components/BigStars";
 import CommentList from "../components/CommentList";
 import OpenLibraryAPI from "../OpenLibraryAPI";
+import { useParams } from "react-router";
 
 
 const BookDetails = () => {
     const [filledHeart, setFilledHeart] = React.useState(false);
+    const {id, authorName} = useParams();
     const [book, setBook] = React.useState({});
     const [bookAuthor, setBookAuthor] = React.useState({});
     const [bookId, setBookId] = React.useState('OL45883W');
     const [error, setError] = React.useState('');
     React.useEffect(() => {
         //w propsach przekazane book id
-        OpenLibraryAPI.getBook(bookId).then(
-            data => setBook(data),
+        OpenLibraryAPI.getBook(id).then(
+            data => setBook({...data, author_name: authorName}),
             (error) => setError(error)
         )
     }, []);
@@ -49,12 +51,12 @@ const BookDetails = () => {
                             </View>
                             <View style={styles.row}>
                             <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>by </Text>
-                            <Text>
+                            {/* <Text>
                             {book.author_name}
-                            </Text>
-                             {/* {book.author_name.map(author => <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>{author} </Text>)} */}
+                            </Text> */}
+                              <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>{book.author_name ? book.author_name : "Autor nieznany"} </Text>
                             </View>
-                            <Text style={{ color: Colors.grey600, fontSize: 12, marginTop: 5 }}>{book.description}</Text>
+                            <Text style={{ color: Colors.grey600, fontSize: 12, marginTop: 5 }}>{ book.description ? book.description : "Oops! Autor nie przygotował opisu tej ksiąki!"}</Text>
                             {/*<Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>by {book.author_name[0]} {book.author_name[0]}</Text>*/}
                             <BigStars />
                             <Button icon="plus" mode="outlined"  style={{ marginTop: 10 }} onPress={() => addToLibrary()}>

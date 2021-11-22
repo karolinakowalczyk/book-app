@@ -19,7 +19,7 @@ const Book = (props) => {
   const authorName = props.book.author_name[0];
   const title = props.book.title;
   const cover = props.book.cover;
-  
+  // console.log(props.book);
   return (
       <Card style={{width: '85%'}}>
       <Card.Cover style={{width: '100%', height: 100}} source={{ uri: cover ? cover : 'https://picsum.photos/200/300' }} />
