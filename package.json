@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@mdi/js": "^6.3.95",
+    "axios": "^0.24.0",
     "expo": "~42.0.1",
     "expo-cli": "^4.12.10",
     "expo-status-bar": "~1.0.4",

@@ -20,7 +20,7 @@ const BackButton = () => {
 const styles = StyleSheet.create({
       subBtn: {
         alignSelf: 'center',
-        marginTop: 30,
+        marginTop: 20,
         fontSize: 13,
         color: 'gray',
         textDecorationLine: 'underline',

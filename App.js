@@ -26,7 +26,7 @@ export default function App() {
             <Route path="/" exact>
               <WelcomePage/>
             </Route>
-            <Route path="/book-details" exact>
+            <Route path="/book-details/:id/:authorName" exact>
               <BookDetails/>
             </Route>
             <Route>

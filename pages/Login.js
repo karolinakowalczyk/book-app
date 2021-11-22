@@ -26,7 +26,7 @@ const Login = () => {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((loggedUser) => {
-        console.log(loggedUser);
+        // console.log(loggedUser);
         // setCurrentUser(loggedUser.user.uid);
         // console.log(currentUser);
         setRedirect(true);
