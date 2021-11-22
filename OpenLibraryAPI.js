@@ -1,6 +1,6 @@
-import { mdiConsoleNetwork } from "@mdi/js"
-import axios from "axios"
-import fetch, { Request } from "node-fetch"
+//import { mdiConsoleNetwork } from "@mdi/js"
+// import fetch, { Request } from "node-fetch"
+import axios from 'axios';
 
 const numBooks = 24999653
 const query = {
@@ -158,7 +158,7 @@ publisher
 ***
 */
 
-async function search(filter, value, limit=20, page=1, fullData=false, keys=importantKeys){
+export async function search(filter, value, limit=20, page=1, fullData=false, keys=importantKeys){
     let request = ''
     if(Array.isArray(filter)) 
         for(let i in filter){
@@ -175,7 +175,7 @@ async function search(filter, value, limit=20, page=1, fullData=false, keys=impo
     }
     request += 'page=' + page + '&limit=' + limit
     request = parseQuery('search', request)
-    console.log(request)
+ 
 
     let data = await fetch(request).then(response => response.json())
     if (!fullData) for (let entry in data.docs) {
@@ -201,10 +201,11 @@ async function getImageUrlByCoverId(id, size='M'){
 }
 
 // async function checkImage(link){
-//     let exist = await fetch(link).then(response => response.body._readableState.buffer.length > 1)
-//     return exist ? link : undefined
+//     let exist = await axios.get(link);
+//     return exist;
+//     // fetch(link).then(response => response.body._readableState.buffer.length > 1)
+//     // return exist ? link : undefined
 // }
-
 async function checkImage(link){
     let exist = await axios.get(link).then(response => !response.data.includes('GIF89a'))
     return exist ? link : undefined
@@ -212,8 +213,8 @@ async function checkImage(link){
 
 //await search({query: 'Tolkien', limit: 1, page: 10})
 //console.log(await getRandomBooks(2))
-console.log(await getImageUrl('OL26348311M'))
-//console.log(await search('subject', 'English', 1, 1))
+//console.log(await getImageUrl('OL7353617M'))
+//console.log((await search('title', 'JANE EYRE')))
 //console.log(await getAuthor('OL34184A'))
 //console.log(await getBook('OL7353617M'))
 /*
@@ -222,3 +223,9 @@ search(filter, value, page=1, limit=20)
 Work ID + pierwsze wydanie
 imageurl w search
 */
+const OpenLibraryAPI = {
+    getBook,
+    getAuthor,
+};
+
+export default OpenLibraryAPI;
