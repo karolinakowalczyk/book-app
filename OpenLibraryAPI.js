@@ -158,6 +158,10 @@ publisher
 ***
 */
 
+// export async function search(filter, value, limit=20, page=1, fullData=false, keys=importantKeys) {
+
+// }
+
 export async function search(filter, value, limit=20, page=1, fullData=false, keys=importantKeys){
     let request = ''
     if(Array.isArray(filter)) 
@@ -184,15 +188,18 @@ export async function search(filter, value, limit=20, page=1, fullData=false, ke
         let temp = data.docs[entry].key.split('/')
         data.docs[entry].key = temp[temp.length - 1]
 
-        data.docs[entry].cover = await getImageUrl(data.docs[entry].edition_key[0])
+        data.docs[entry].cover = await getImageUrl(data.docs[entry].key)
     }
 
     return data
 }
 
 async function getImageUrl(id, size='M'){
-    let url = query['image'].replace('$value', id).replace('$size', size)
-    return await checkImage(url)
+    const book = await getBook(id);
+    const cover = book.cover;
+    return cover
+    // let url = query['image'].replace('$value', id).replace('$size', size)
+    // return await checkImage(url)
 }
 
 async function getImageUrlByCoverId(id, size='M'){

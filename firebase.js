@@ -14,7 +14,6 @@ import '@firebase/firestore'
 const firebaseConfig = {
   apiKey: "AIzaSyAqT5Ij4b6XWIQxusZDeuB6zeXf5dOv6o4",
   authDomain: "book-app-24193.firebaseapp.com",
-  databaseURL: "https://book-app-24193-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "book-app-24193",
   storageBucket: "book-app-24193.appspot.com",
   messagingSenderId: "575992726940",
@@ -23,8 +22,14 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-//const analytics = getAnalytics(app);
+let app;
+
+if (!firebase.apps.length) {
+  app = firebase.initializeApp(firebaseConfig);
+} else {
+  firebase.app();
+}
+
 const db = app.firestore()
 const auth = app.auth()
 

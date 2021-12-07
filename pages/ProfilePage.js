@@ -1,28 +1,63 @@
 import { StyleSheet, View, Text, Banner } from "react-native";
 import React from 'react';
 import BackButton from "../components/BackButton";
+import { useEffect } from "react";
 
-import { auth } from "../firebase.js"; 
+import { auth, db } from "../firebase.js"; 
 import { Avatar, Colors, Button, IconButton } from 'react-native-paper';
 import Book from "../components/Book";
 import LoadMore from "../components/LoadMore";
+import OpenLibraryAPI from "../OpenLibraryAPI";
+import { Link } from "react-router-native";
 
 
 const ProfilePage = () => {
-    const loadInFavouriteBooks = (bookType, amount, page = 1, itemsPerPage = 3) => {
-        //pobranie z bazy ulubionych książek
-    const books = [];
-    for (let i=0; i < itemsPerPage; i++) {
-        //TO DO: add book props or maybe rewrite whole function
-      books.push(<View key={i} style={{ flexBasis: '30%', alignItems: 'center', margin: 2}}><Book /></View>)
-    }
-    return books;
-    }
+    const [favBooks, setFavBooks] = React.useState([]);
+    const [comeBackDisabled, setComeBackDisabled] = React.useState(true);
+    const [loadMoreDisabled, setLoadMoreDisabled] = React.useState(false);
+    const [offset, setOffset] = React.useState(0);
+    
+
+    useEffect(() => {
+    let tempFavBooks = [];
+    db.collection("favourite-books")
+    .where("user_id", "==", auth.currentUser.uid)
+    .get()
+    .then((querySnapshot) => {
+        let index = 0;
+        querySnapshot.forEach(doc => {
+            index++;
+            const bookData = doc.data();
+                tempFavBooks.push(
+                <View key={index} style={{flexBasis: '33%', alignItems: 'center', marginTop: 10}}>
+                    <Link key={index} to={`/book-details/${bookData.book_id}/${bookData.author_name}`}>
+                        <Book key={index} book={bookData}/>
+                    </Link>
+                </View>);
+        });
+        if (tempFavBooks.length > offset + 3) {
+            setLoadMoreDisabled(false);
+        } 
+        else {
+            setLoadMoreDisabled(true);
+        }
+
+        tempFavBooks = tempFavBooks.slice(offset, offset + 3);
+
+        setFavBooks(tempFavBooks);  
+    });
+    
+    }, [offset])
+          
     const loadMore = () => {
-        
+        setOffset(offset + 3)
+        setComeBackDisabled(false);
     }
     const comeBack = () => {
-    
+        if (offset >= 3) {
+            setOffset(offset - 3)
+        }
+        setComeBackDisabled(true);
     }
     return (
     <View style={[styles.profileContainer, {
@@ -30,22 +65,19 @@ const ProfilePage = () => {
     }]}>
         <BackButton />
         <View style={styles.row}>
-            <Avatar.Image size={120} source={require('../assets/images/reading.png')}  style={styles.profileImg} />
+            <Avatar.Image size={100} source={require('../assets/images/reading.png')}  style={styles.profileImg} />
             <View style={styles.column}>
                 <Text style={{color: Colors.purple900, fontSize: 36}}>{ auth.currentUser.displayName }</Text>
                 <Text style={{ color: Colors.grey600, fontSize: 16, marginTop: 5 }}>Całkowity czas czytania: 210 h</Text>
             </View>
         </View>
-        <Button mode="contained" style={styles.changePassBtn}>
-            <Text style={styles.changePassBtnText}>ZMIEŃ HASŁO</Text>
-        </Button>
         <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 10, paddingLeft: 20 }}>Przecztałeś/aś już 20 książek! </Text>
         
-        <Text style={{color: Colors.purple900, fontSize: 24, marginTop: 10, paddingLeft: 20}}>Twoje ulubione książki:</Text>
-        <View style={{ flexDirection: 'row', marginTop: 20, flex: 1, flexWrap: 'wrap', justifyContent: 'center' }} >
-            {loadInFavouriteBooks()}
+        <Text style={{color: Colors.purple900, fontSize: 24, marginTop: 20, paddingLeft: 20}}>Twoje ulubione książki:</Text>
+        <View style={{ flexDirection: 'row', marginTop: 45, flex: 1, flexWrap: 'wrap', justifyContent: 'center' }} >
+            {favBooks}
         </View>
-        <LoadMore></LoadMore>
+        <LoadMore  comeBackDisabled={comeBackDisabled} loadMoreDisabled={loadMoreDisabled} comeBack={comeBack} loadMore={loadMore}/>
             
     </View>
            
