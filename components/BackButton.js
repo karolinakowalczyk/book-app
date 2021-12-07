@@ -3,11 +3,12 @@ import {Link, Redirect } from "react-router-native";
 import { StyleSheet } from "react-native";
 
 import React from "react";
-const BackButton = () => {
+const BackButton = (props) => {
+  const {link} = props;
   //jeżeli user zalogowany to niech przenosi to="/home"
   return (
     <Link
-        to="/"
+        to={link ? link : '/'}
         exact
         style={styles.subBtn}
     ><Button icon="arrow-left-bold-circle-outline">

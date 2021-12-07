@@ -11,11 +11,17 @@ export default loadBooks = async (filterType, filterValue, page=1, itemsPerPage=
     
     const booksComponents = [];
 
+
     for (let i=0; i < itemsPerPage; i++) {
+        
+        const key = books.docs[i].key ? books.docs[i].key : undefined;
+    
+        const authorName = books.docs[i].author_name[0] ? books.docs[i].author_name[0] : books.docs[i].author_name;
+    
         //TO DO: add book props or maybe rewrite whole function
         booksComponents.push(
         <View key={i} style={{flexBasis: '33%', alignItems: 'center', marginTop: 10}}>
-            <Link to={`/book-details/${books.docs[i].key}/${books.docs[i].author_name[0]}`}>
+            <Link to={`/book-details/${key}/${authorName}`}>
                 <Book book={books.docs[i]}/>
             </Link>
         </View>

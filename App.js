@@ -29,7 +29,7 @@ export default function App() {
             <Route path="/book-details/:id/:authorName" exact>
               <BookDetails/>
             </Route>
-            <Route>
+            <Route path="/main">
               <Route path="/home" exact>
                 <HomePage/>
               </Route>

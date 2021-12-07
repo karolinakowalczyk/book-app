@@ -36,6 +36,7 @@ const FilteredBooksPage = (props) => {
           let response = await loadBooks(existingFilterTypes, existingFilterValues, page, 15);
           setBooks(response);
         }
+
         fetchBooks()
       }, [page])
 
@@ -61,7 +62,7 @@ const FilteredBooksPage = (props) => {
                             onPress={incrementPage}
                         />
                     </View>
-                    <BackButton/>
+                    <BackButton link="/main/home"/>
                 </View>
             </ScrollView>
       </SafeAreaView>
