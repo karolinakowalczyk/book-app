@@ -54,7 +54,7 @@ async function dbCheck(collection, document){
 }
 
 async function dbAdd(collectionName, documentName, data) {
-  var z = await db.collection(collectionName).doc(documentName).update(data);
+  var z = await db.collection(collectionName).doc(documentName).add(data);
 }
 
 async function dbUpdate(collectionName, documentName, data) {
@@ -85,7 +85,7 @@ dbAdd('test', 'Test1', data);
 */
 
 function GetFirebaseUUID(){
-  return db.getReference("IDgenerator").push().getKey();
+  return db.collection("IDgenerator").add({a : 1}).id;
 }
 
 let timestamp = firebase.firestore.FieldValue.serverTimestamp
@@ -102,9 +102,12 @@ async function dbAddStatus(user_id, book_id, status){
 
 async function dbAddComment(user_id, book_id, comment){
   let comment_id = GetFirebaseUUID()
-
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date+' '+time;
   let data = {
-    [comment_id] : [user_id, timestamp(), comment]
+    [comment_id] : [user_id, dateTime, comment]
   }
 
   if(dbCheck(collections.comments, book_id)) dbUpdate(collections.comments, book_id, data)
@@ -164,4 +167,4 @@ async function dbAddTimePlanned(user_id, book_id, hours){
 }
 
 
-export { db , app , auth , dbAdd, dbUpdate }
+export { db , app , auth , dbAdd, dbUpdate, dbAddComment, dbAddRating, dbAddReadBook, dbAddStatus, dbAddTime, dbAddTimePlanned }
