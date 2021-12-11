@@ -139,9 +139,9 @@ async function dbAddRating(user_id, book_id, rating){
     [book_id] : rating
   }
 
-  if(dbCheck(collections.rating, user_id)) 
-    dbUpdate(collections.ratings, user_id, data)
-  else dbAdd(collections.rating, user_id, data)
+  if(await dbCheck(collections.rating, user_id)) 
+  await dbUpdate(collections.ratings, user_id, data)
+  else await dbAdd(collections.rating, user_id, data)
 }
 
 async function dbAddReadBook(user_id, book_id){
@@ -155,8 +155,8 @@ async function dbAddReadBook(user_id, book_id){
     books : arrayUnion(book_id)
   }
 
-  if(dbCheck(collections.read_books, user_id)) dbUpdate(collections.read_books, user_id, data)
-  else dbAdd(collections.read_books, user_id, data)
+  if(await dbCheck(collections.read_books, user_id)) await dbUpdate(collections.read_books, user_id, data)
+  else await dbAdd(collections.read_books, user_id, data)
 }
 
 async function dbAddTime(user_id, book_id, time){
@@ -164,8 +164,8 @@ async function dbAddTime(user_id, book_id, time){
     [book_id] : time
   }
 
-  if(dbCheck(collections.times, user_id)) dbUpdate(collections.times, user_id, data)
-  else dbAdd(collections.times, user_id, data)
+  if(await dbCheck(collections.times, user_id)) await dbUpdate(collections.times, user_id, data)
+  else await dbAdd(collections.times, user_id, data)
 }
 
 async function dbAddTimePlanned(user_id, book_id, hours){
@@ -174,8 +174,8 @@ async function dbAddTimePlanned(user_id, book_id, hours){
     hours : arrayUnion(hours)
   }
 
-  if(dbCheck(collections.time_planned, user_id)) dbUpdate(collections.time_planned, user_id, data)
-  else dbAdd(collections.time_planned, user_id, data)
+  if(await dbCheck(collections.time_planned, user_id)) await dbUpdate(collections.time_planned, user_id, data)
+  else await dbAdd(collections.time_planned, user_id, data)
 }
 
 
