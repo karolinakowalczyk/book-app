@@ -15,6 +15,7 @@ import { auth, db } from "../firebase";
 import { Rating, AirbnbRating } from "react-native-elements";
 
 
+
 const BookDetails = () => {
     const [filledHeart, setFilledHeart] = React.useState(false);
     const {id, authorName} = useParams();
