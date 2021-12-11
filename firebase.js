@@ -34,31 +34,39 @@ const collections = {
 // Initialize Firebase
 let app;
 
-if (!firebase.apps.length) {
+//if (!firebase.apps.length) {
   app = firebase.initializeApp(firebaseConfig);
-} else {
-  firebase.app();
-}
+//} else {
+//  firebase.app();
+//}
 
 const db = app.firestore()
 const auth = app.auth()
 
 async function dbCheck(collection, document){
-  var docRef = db.collection(collection).doc(document)
+  
+  let docRef = db.collection(collection).doc(document).get().then((doc) => {
+      return doc.exists
+    }).catch((error) => {
+      console.log(error)
+      return false
+    });
 
-  docRef.get().then((doc) => {
-    return doc.exists
-  }).catch((error) => {
-    return false
-  });
+    return docRef;
+  
+  // docRef.get().then((doc) => {
+  //   return doc.exists
+  // }).catch((error) => {
+  //   return false
+  // });
 }
 
 async function dbAdd(collectionName, documentName, data) {
-  var z = await db.collection(collectionName).doc(documentName).add(data);
+  await db.collection(collectionName).doc(documentName).set(data);
 }
 
 async function dbUpdate(collectionName, documentName, data) {
-  var z = await db.collection(collectionName).doc(documentName).update(data);
+  await db.collection(collectionName).doc(documentName).update(data);
 }
 
 /*Testowa funkcja dodająca wartości do bazy
@@ -69,7 +77,7 @@ const data = {
 }
 
 async function dbAdd(collectionName, documentName, data) {
-  var z = await db.collection(collectionName).doc(documentName).set(data);
+  let z = await db.collection(collectionName).doc(documentName).set(data);
 }
 
 call:
@@ -84,8 +92,8 @@ dbAdd('test', 'Test1', data);
 
 */
 
-function GetFirebaseUUID(){
-  return db.collection("IDgenerator").add({a : 1}).id;
+async function GetFirebaseUUID(){
+  return db.collection("IDgenerator").add({a : 1}).then((doc) => doc.id);
 }
 
 let timestamp = firebase.firestore.FieldValue.serverTimestamp
@@ -101,17 +109,20 @@ async function dbAddStatus(user_id, book_id, status){
 }
 
 async function dbAddComment(user_id, book_id, comment){
-  let comment_id = GetFirebaseUUID()
-  var today = new Date();
-  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  var dateTime = date+' '+time;
+  let comment_id = await GetFirebaseUUID()
+  let today = new Date();
+  let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  let dateTime = date+' '+time;
   let data = {
     [comment_id] : [user_id, dateTime, comment]
   }
 
-  if(dbCheck(collections.comments, book_id)) dbUpdate(collections.comments, book_id, data)
-  else dbAdd(collections.comments, book_id, data)
+  if(await dbCheck(collections.comments, book_id)) await dbUpdate(collections.comments, book_id, data)
+  else {
+    console.log(data)
+    await dbAdd(collections.comments, book_id, data)
+  }
 }
 
 // async function dbSetFavourite(user_id, book_id){
@@ -128,7 +139,8 @@ async function dbAddRating(user_id, book_id, rating){
     [book_id] : rating
   }
 
-  if(dbCheck(collections.rating, user_id)) dbUpdate(collections.ratings, user_id, data)
+  if(dbCheck(collections.rating, user_id)) 
+    dbUpdate(collections.ratings, user_id, data)
   else dbAdd(collections.rating, user_id, data)
 }
 
