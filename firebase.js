@@ -221,7 +221,7 @@ async function dbGet(collection, filter){
 async function dbGet2Filter(collection, filter1, filter2){
   let data = []
   await db.collection(collection).
-  where(filter1.field, filter1.op, filter1.value)
+  where(filter1.field, filter1.op, filter1.value).
   where(filter2.field, filter2.op, filter2.value)
   .get().then((querySnapshot) => {
     querySnapshot.forEach(element => {
@@ -233,11 +233,11 @@ async function dbGet2Filter(collection, filter1, filter2){
 }
 
 async function dbGetStatus(user_id, book_id){
-  return await dbGet2Filter(collection.statuses, mkFilter("user_id", "==", user_id), mkFilter("book_id", "==", book_id))
+  return await dbGet2Filter(collections.statuses, mkFilter("user_id", "==", user_id), mkFilter("book_id", "==", book_id))
 }
 
 async function dbGetUserStatuses(user_id){
-  return await dbGet(collection.statuses, mkFilter("user_id", "==", user_id))
+  return await dbGet(collections.statuses, mkFilter("user_id", "==", user_id))
 }
 
 async function dbGetComments(book_id){
@@ -266,6 +266,30 @@ async function dbGetUserTimes(user_id){
 
 async function dbGetUserTimesPlanned(user_id){
   return await dbGet(collections.time_planned, mkFilter('user_id', '==', user_id))
+}
+
+function getWeekNumber(d){
+  
+  d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+  let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  let weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+  return {
+    week : weekNo,
+    year : d.getUTCFullYear()
+  }
+}
+
+function GetPlanningStats(user_id){
+  let yearWeekNow = getWeekNumber(new Date())
+  let plans = await dbGetUserTimesPlanned(user_id)
+  let times = await dbGetUserTimes(user_id)
+
+  // let stats = [{
+  //   week : 
+  // }]
+
+  // for(let i in times)
 }
 
 export { db , app , auth ,
