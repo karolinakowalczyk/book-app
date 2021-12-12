@@ -125,32 +125,16 @@ async function dbAddComment(user_id, book_id, comment){
   }
 }
 
-// async function dbSetFavourite(user_id, book_id){
-//   let data = {
-//     [user_id] : book_id
-//   }
-
-//   if(dbCheck(collections.favourites, user_id)) dbUpdate(collections.favourites, user_id, data)
-//   else dbAdd(collections.favourites, user_id, data)
-// }
-
 async function dbAddRating(user_id, book_id, rating){
   let data = {
     [book_id] : rating
   }
 
-  if(await dbCheck(collections.rating, user_id)) 
-  await dbUpdate(collections.ratings, user_id, data)
+  if(await dbCheck(collections.rating, user_id)) await dbUpdate(collections.ratings, user_id, data)
   else await dbAdd(collections.rating, user_id, data)
 }
 
 async function dbAddReadBook(user_id, book_id){
-  // if(dbCheck(collections.rating, user_id)) {
-  //   db.collection(collections.rating).doc(user_id).get('books').push(book_id)
-  //   dbUpdate(collections.ratings, user_id, data)
-  // }
-  // else dbAdd(collections.rating, user_id, [book_id])
-
   let data = {
     books : arrayUnion(book_id)
   }
@@ -170,13 +154,76 @@ async function dbAddTime(user_id, book_id, time){
 
 async function dbAddTimePlanned(user_id, book_id, hours){
   let data = {
-    dates : arrayUnion(timestamp()),
-    hours : arrayUnion(hours)
+    [GetFirebaseUUID()]: {
+      dates : timestamp(),
+      hours : hours
+    }
   }
 
   if(await dbCheck(collections.time_planned, user_id)) await dbUpdate(collections.time_planned, user_id, data)
   else await dbAdd(collections.time_planned, user_id, data)
 }
 
+//TO TEST
+async function dbGetDoc(collection, doc){
+  if(await dbCheck(collection, doc)) return db.collection(collection).doc(doc)
+  else return undefined 
+}
 
-export { db , app , auth , dbAdd, dbUpdate, dbAddComment, dbAddRating, dbAddReadBook, dbAddStatus, dbAddTime, dbAddTimePlanned }
+async function dbGetField(collection, doc, field){
+  try{
+    return dbGetDoc(collection, doc).get(field)
+  } catch(error){
+    console.log(error)
+    return undefined
+  }
+}
+
+async function dbGetData(collection, doc){
+  try{
+    return dbGetDoc(collection, doc).get()
+  } catch(error){
+    console.log(error)
+    return undefined
+  }
+}
+
+async function dbGetStatus(user_id, book_id){
+  return await dbGetField(collections.statuses, user_id, book_id)
+}
+
+async function dbGetUserStatuses(user_id){
+  return await dbGetData(collections.statuses, user_id)
+}
+
+async function dbGetComments(book_id){
+  return await dbGetData(collections.comments, book_id)
+}
+
+async function dbGetRating(user_id, book_id){
+  return await dbGetField(collections.ratings, user_id, book_id)
+}
+
+async function dbGetUserRatings(user_id){
+  return await dbGetData(collections.ratings, user_id)
+}
+
+async function dbGetReadBooks(user_id){
+  return await dbGetData(collections.read_books, user_id)
+}
+
+async function dbGetTimes(user_id, book_id){
+  return await dbGetField(collections.times, user_id, book_id)
+}
+
+async function dbGetUserTimes(user_id){
+  return await dbGetData(collections.times, user_id)
+}
+
+async function dbGetUserTimesPlanned(user_id){
+  return await dbGetData(collections.time_planned, user_id)
+}
+
+export { db , app , auth ,
+   dbAdd, dbUpdate, dbAddComment, dbAddRating, dbAddReadBook, 
+   dbAddStatus, dbAddTime, dbAddTimePlanned }
