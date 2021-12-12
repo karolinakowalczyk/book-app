@@ -128,7 +128,10 @@ async function dbAddStatus(user_id, book_id, status){
     book_id : book_id,
     status : status
   }
-  await dbSet(collections.statuses, data)
+
+  let check = await dbGetStatus(user_id, book_id)
+  if(check.length == 0) await dbSet(collections.statuses, data)
+  else await dbUpdate(collections.statuses, check[0].id, data)
 }
 
 async function dbAddComment(user_id, book_id, comment){
@@ -150,7 +153,9 @@ async function dbAddRating(user_id, book_id, rating){
     user_id : user_id
   }
 
-  await dbSet(collections.ratings, data)
+  let check = await dbGetStatus(user_id, book_id)
+  if(check.length == 0) await dbSet(collections.ratings, data)
+  else dbUpdate(collections.ratings, check[0].id, data)
 }
 
 // async function dbAddReadBook(user_id, book_id){
@@ -212,7 +217,9 @@ async function dbGet(collection, filter){
   await db.collection(collection).where(filter.field, filter.op, filter.value).get().then((querySnapshot) => {
     querySnapshot.forEach(element => {
       console.log("DUPA")
-      data.push(element.data())
+      let d = element.data()
+      d.id = element.id
+      data.push(d)
     })
   })
   return data
@@ -226,7 +233,9 @@ async function dbGet2Filter(collection, filter1, filter2){
   .get().then((querySnapshot) => {
     querySnapshot.forEach(element => {
       console.log("DUPA")
-      data.push(element.data())
+      let d = element.data()
+      d.id = element.id
+      data.push(d)
     })
   })
   return data
@@ -280,16 +289,23 @@ function getWeekNumber(d){
   }
 }
 
-function GetPlanningStats(user_id){
+async function GetPlanningStats(user_id){
   let yearWeekNow = getWeekNumber(new Date())
   let plans = await dbGetUserTimesPlanned(user_id)
   let times = await dbGetUserTimes(user_id)
 
-  // let stats = [{
-  //   week : 
-  // }]
+  let stat_times = [{
+    year : 0,
+    week : 0,
+    done : 0
+  }]
 
-  // for(let i in times)
+  let stat_planned = [{
+    year : 0,
+    week : 0,
+    planned : 0
+  }]
+
 }
 
 export { db , app , auth ,
