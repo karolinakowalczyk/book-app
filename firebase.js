@@ -102,10 +102,7 @@ async function GetFirebaseUUID(){
 }
 
 function timestamp(){
-  let today = new Date();
-  let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-  let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  let dateTime = date+' '+time;
+  let dateTime = new Date();
   return dateTime
 }
 
@@ -133,26 +130,28 @@ async function dbAddComment(user_id, book_id, comment){
 async function dbAddRating(user_id, book_id, rating){
   let data = {
     book_id : book_id,
-    rating : rating
+    rating : rating,
+    user_id : user_id
   }
 
   await dbSet(collections.ratings, data)
 }
 
-async function dbAddReadBook(user_id, book_id){
-  let data = {
-    user_id : user_id,
-    book_id : book_id
-  }
+// async function dbAddReadBook(user_id, book_id){
+//   let data = {
+//     user_id : user_id,
+//     book_id : book_id
+//   }
 
-  await dbUpdate(collections.read_books, data)
-}
+//   await dbSet(collections.read_books, data)
+// }
 
 async function dbAddTime(user_id, book_id, time){
   let data = {
     book_id : book_id,
     time : time,
-    user_id : user_id
+    user_id : user_id,
+    dateTime : timestamp()
   }
 
   await dbSet(collections.times, data)
@@ -165,7 +164,7 @@ async function dbAddTimePlanned(user_id, hours){
     dateTime : timestamp()
   }
 
-  await dbUpdate(collections.time_planned, data)
+  await dbSet(collections.time_planned, data)
 }
 
 //TO TEST
