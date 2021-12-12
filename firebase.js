@@ -201,11 +201,16 @@ async function dbGetData(collection, doc){
 
 async function dbGet(collection, filter){
   let data = []
-  const snapshot = await db.collection(collection).where(filter.field, filter.op, filter.value).get()
-  snapshot.forEach(element => {
-    console.log("DUPA")
-    data.push(element)
+  await db.collection(collection).where(filter.field, filter.op, filter.value).get().then((querySnapshot) => {
+    querySnapshot.forEach(element => {
+      console.log("DUPA")
+      data.push(element.data())
+    })
   })
+  // snapshot.forEach(element => {
+  //   console.log("DUPA")
+  //   data.push(element.data())
+  // })
   return data
 }
 
@@ -246,5 +251,5 @@ async function dbGetUserTimesPlanned(user_id){
 }
 
 export { db , app , auth ,
-   dbAdd, dbUpdate, dbAddComment, dbAddRating, dbAddReadBook, 
+   dbAdd, dbUpdate, dbAddComment, dbAddRating, dbGetComments, 
    dbAddStatus, dbAddTime, dbAddTimePlanned }
