@@ -289,17 +289,24 @@ function getWeekNumber(d){
   }
 }
 
-// function GetPlanningStats(user_id){
-//   let yearWeekNow = getWeekNumber(new Date())
-//   let plans = await dbGetUserTimesPlanned(user_id)
-//   let times = await dbGetUserTimes(user_id)
+async function GetPlanningStats(user_id){
+  let yearWeekNow = getWeekNumber(new Date())
+  let plans = await dbGetUserTimesPlanned(user_id)
+  let times = await dbGetUserTimes(user_id)
 
-//   // let stats = [{
-//   //   week : 
-//   // }]
+  let stat_times = [{
+    year : 0,
+    week : 0,
+    done : 0
+  }]
 
-//   // for(let i in times)
-// }
+  let stat_planned = [{
+    year : 0,
+    week : 0,
+    planned : 0
+  }]
+
+}
 
 export { db , app , auth ,
    dbAdd, dbUpdate, dbAddComment, dbAddRating, dbGetComments, 
