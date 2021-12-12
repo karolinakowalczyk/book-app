@@ -123,11 +123,14 @@ function timestamp(){
   return dateTime
 }
 
-async function dbAddStatus(user_id, book_id, status){
+async function dbAddStatus(user_id, book_id, status, title, author_name, cover){
   let data = {
     user_id : user_id,
     book_id : book_id,
-    status : status
+    status : status,
+    title : title,
+    autor_name : author_name,
+    cover : cover
   }
 
   let check = await dbGetStatus(user_id, book_id)
@@ -242,6 +245,8 @@ async function dbGet2Filter(collection, filter1, filter2){
   return data
 }
 
+public 
+
 async function dbGetStatus(user_id, book_id){
   return await dbGet2Filter(collections.statuses, mkFilter("user_id", "==", user_id), mkFilter("book_id", "==", book_id))
 }
@@ -318,6 +323,7 @@ async function GetPlanningStats(user_id){
   }
 
   return {
+    week : [...new Set(Object.keys(plans).concat(Object.keys(done)))],
     plans : planWeek,
     done: timesWeek
   }
