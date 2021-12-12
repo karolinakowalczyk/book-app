@@ -15,7 +15,7 @@
     "expo-cli": "^4.12.10",
     "expo-dev-client": "^0.6.3",
     "expo-status-bar": "~1.0.4",
-    "firebase": "^8.10.0",
+    "firebase": "^8.2.3",
     "moment": "^2.29.1",
     "node-fetch": "^3.0.0",
     "react": "16.13.1",
