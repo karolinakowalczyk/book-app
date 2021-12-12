@@ -245,8 +245,6 @@ async function dbGet2Filter(collection, filter1, filter2){
   return data
 }
 
-public 
-
 async function dbGetStatus(user_id, book_id){
   return await dbGet2Filter(collections.statuses, mkFilter("user_id", "==", user_id), mkFilter("book_id", "==", book_id))
 }
