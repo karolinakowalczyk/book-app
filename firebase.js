@@ -129,7 +129,7 @@ async function dbAddStatus(user_id, book_id, status, title, author_name, cover){
     book_id : book_id,
     status : status,
     title : title,
-    autor_name : author_name,
+    author_name : author_name,
     cover : cover
   }
 
@@ -242,8 +242,6 @@ async function dbGet2Filter(collection, filter1, filter2){
   })
   return data
 }
-
-public 
 
 async function dbGetStatus(user_id, book_id){
   return await dbGet2Filter(collections.statuses, mkFilter("user_id", "==", user_id), mkFilter("book_id", "==", book_id))

@@ -124,7 +124,7 @@ const BookDetails = () => {
     }
 
     const setBookStatus = () => {
-        dbAddStatus(auth.currentUser.uid, id, tempChecked);
+        dbAddStatus(auth.currentUser.uid, id, tempChecked, book.title, authorName, book.cover);
         setChecked(tempChecked);
         hideModal();
     }

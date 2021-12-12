@@ -16,13 +16,13 @@ const UserBooksPage = () => {
   const [offset, setOffset] = React.useState(0);
 
   useEffect(() => {
-    const checkUserFavourites = async () => {
+    const fetchBooks = async () => {
       const booksFetched = [];
       // let collectionName = "favourite-books";
       // if (btnSelected === 1) {
       //   collectionName = 
       // }
-      await db.collection("favourite-books")
+      await db.collection("book-statuses")
       .where("user_id", "==", auth.currentUser.uid)
       .get()
       .then((querySnapshot) => {
@@ -40,7 +40,7 @@ const UserBooksPage = () => {
       console.log(books[0])
   };
   
-  checkUserFavourites();
+  fetchBooks();
   }, [])
 
   const loadMore = () => {
@@ -55,45 +55,26 @@ const comeBack = () => {
 }
 
 
-  const loadInProgressBooks = (bookType, amount, page=1, itemsPerPage=6) => {
+  const loadBooks = (status, bookType, amount, page=1, itemsPerPage=6,) => {
     const booksJSX = [];
     //jakiś if że w trakcie
     let elementsAmount = itemsPerPage;
     if (books.length < itemsPerPage) {
       elementsAmount = books.length;
     }
-    
     for (let i=0; i < elementsAmount; i++) {
-        //TO DO: add book props or maybe rewrite whole function
-      booksJSX.push(
-        <View style={{flexBasis: '33%', alignItems: 'center', marginTop: 10}}>
-          <Link  to={`/book-details/`}>
-            <Book book={books[i]}/>
-          </Link>
-        </View>
-      )
+      if (books[i].status === status) {
+        console.log(books[i])
+        booksJSX.push(
+          <View style={{flexBasis: '33%', alignItems: 'center', marginTop: 10}}>
+            <Link  to={`/book-details/${books[i].book_id}/${books[i].author_name}`}>
+              <Book book={books[i]}/>
+            </Link>
+          </View>
+        )
+      }
     }
     return booksJSX;
-  }
-
-  const loadInReadBooks = (bookType, amount, page=1, itemsPerPage=6) => {
-    const books = [];
-    //jakiś if że przeczytane
-    for (let i=0; i < itemsPerPage; i++) {
-        //TO DO: add book props or maybe rewrite whole function
-      books.push(<View key={i} style={{ flexBasis: '30%', alignItems: 'center', margin: 2}}><Book /></View>)
-    }
-    return books;
-  }
-
-  const loadInPlannedBooks = (bookType, amount, page=1, itemsPerPage=6) => {
-    const books = [];
-    //jakiś if że planowane
-    for (let i=0; i < itemsPerPage; i++) {
-        //TO DO: add book props or maybe rewrite whole function
-      books.push(<View key={i} style={{ flexBasis: '30%', alignItems: 'center', margin: 2}}><Book /></View>)
-    }
-    return books;
   }
   
     return (
@@ -123,19 +104,19 @@ const comeBack = () => {
         </View>
         {btnSelected === 1 &&
           <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 25, flex: 1, flexWrap: 'wrap', justifyContent: 'center' }} >
-          {loadInProgressBooks()}
+          {loadBooks('Reading')}
           </View>
         }
         {btnSelected === 2 &&
           <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 25, flex: 1, flexWrap: 'wrap', justifyContent: 'center' }} >
             {/* {loadInReadBooks()} */}
-            {loadInProgressBooks()}
+            {loadBooks('Finished')}
           </View>
         }
         {btnSelected === 3 &&
           <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 25, flex: 1, flexWrap: 'wrap', justifyContent: 'center' }} >
             {/* {loadInPlannedBooks()} */}
-            {loadInProgressBooks()}
+            {loadBooks('Plan to read')}
           </View>
         }
         <LoadMore comeBackDisabled={comeBackDisabled} loadMoreDisabled={loadMoreDisabled} comeBack={comeBack} loadMore={loadMore}></LoadMore>
