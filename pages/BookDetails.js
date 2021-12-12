@@ -229,6 +229,59 @@ const BookDetails = () => {
         )
     }
 
+    const setBookStatus = () => {
+        dbAddStatus(auth.currentUser.uid, id, tempChecked);
+        setChecked(tempChecked);
+        hideModal();
+    }
+
+    const markBookModal = () => {
+        
+        return (
+            
+            <Portal>
+              <Modal visible={visible} onDismiss={hideModal} >
+              <Card style={{ width: '95%',  alignSelf: 'center'}}>
+          <Card.Title title="Oznacz książkę jako:" />
+          <Card.Content>
+          <View style={{flexDirection: 'row', marginTop: 10, alignItems: 'center', borderRadius: 7, borderColor: Colors.purple600, borderWidth: 1}}>
+            <RadioButton
+            value="Plan to read"
+            status={ tempChecked === 'Plan to read' ? 'checked' : 'unchecked' }
+            onPress={() => setTempChecked('Plan to read')}
+            />
+
+            <Text>Chcę przeczytać</Text>
+            </View>
+            <View style={{flexDirection: 'row', marginTop: 10, alignItems: 'center', borderRadius: 7, borderColor: Colors.purple600, borderWidth: 1}}>
+            <RadioButton
+                value="Reading"
+                status={ tempChecked === 'Reading' ? 'checked' : 'unchecked' }
+                onPress={() => setTempChecked('Reading')}
+            />
+            <Text>W trakcie czytania</Text>
+            </View>
+            <View style={{flexDirection: 'row', marginTop: 10, alignItems: 'center', borderRadius: 7, borderColor: Colors.purple600, borderWidth: 1}}>
+            <RadioButton
+                value="Finished"
+                status={ tempChecked === 'Finished' ? 'checked' : 'unchecked' }
+                onPress={() => setTempChecked('Finished')}
+            />
+            <Text>Preczytana</Text>
+            </View>
+      
+          </Card.Content>
+            <Card.Actions>
+                <Button onPress={hideModal}>Cancel</Button>
+                <Button onPress={setBookStatus}>Ok</Button>
+            </Card.Actions>
+            </Card>
+            </Modal>
+            </Portal>
+        
+        )
+    }
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ flex: 1 }}>
