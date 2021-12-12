@@ -316,10 +316,10 @@ async function GetPlanningStats(user_id){
       timesWeek[weekStart].hours += times[i].time
     }
   }
-
-  return {
+  return {  
     plans : planWeek,
-    done: timesWeek
+    done: timesWeek,
+    week : [...new Set(Object.keys(planWeek).concat(Object.keys(timesWeek)))]
   }
 
 }
