@@ -137,14 +137,14 @@ async function dbAddRating(user_id, book_id, rating){
   await dbSet(collections.ratings, data)
 }
 
-// async function dbAddReadBook(user_id, book_id){
-//   let data = {
-//     user_id : user_id,
-//     book_id : book_id
-//   }
+async function dbAddReadBook(user_id, book_id){
+  let data = {
+    user_id : user_id,
+    book_id : book_id
+  }
 
-//   await dbSet(collections.read_books, data)
-// }
+  await dbSet(collections.read_books, data)
+}
 
 async function dbAddTime(user_id, book_id, time){
   let data = {
