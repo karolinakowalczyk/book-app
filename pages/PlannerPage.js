@@ -9,6 +9,7 @@ const PlannerPage = () => {
     const [date, setDate] = useState(new Date(Date.now()));
     const [value, setValue] = useState();
     const [visible, setVisible] = React.useState(false);
+    const [show, setShow] = useState(false);
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);

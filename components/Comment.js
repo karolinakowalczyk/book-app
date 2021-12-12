@@ -1,4 +1,4 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent, PropTypes, useEffect } from 'react';
 import { Avatar } from 'react-native-paper';
 import {
   StyleSheet,
@@ -9,13 +9,8 @@ import moment from 'moment';
 import { Colors } from "react-native-paper";
 
 const Comment = (props) => {
+  const {comment, dateTime, user_id} = props.comment;
 
-    // Pull comment object out of props
-    //const { comment } = this.props;
-    // Pull data needed to display a comment out of comment object
-    //const { content, created, user } = comment;
-    // Pull user name and avatar out of user object
-    //const { name, avatar } = user;
     return (
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
@@ -23,11 +18,11 @@ const Comment = (props) => {
         </View>
         <View style={styles.contentContainer}>
           <Text>
-            <Text style={[styles.text, styles.name]}>Name</Text>
+            <Text style={[styles.text, styles.name]}>Anonim</Text>
             {' '}
-            <Text style={styles.text}>{props.comment}</Text>
+            <Text style={styles.text}>{comment}</Text>
           </Text>
-          <Text style={[styles.text, styles.created]}>{moment().fromNow()}</Text>
+          <Text style={[styles.text, styles.created]}>{dateTime.toDate().toISOString().slice(0,10)}</Text>
         </View>
       </View>
     );

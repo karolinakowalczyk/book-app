@@ -12,9 +12,9 @@ import BigStars from "../components/BigStars";
 import CommentList from "../components/CommentList";
 import OpenLibraryAPI from "../OpenLibraryAPI";
 import { useParams } from "react-router";
-import { auth, db } from "../firebase";
+import { auth, db, dbAddRating, dbAddTime, dbAddTimePlanned, dbGetComments } from "../firebase";
 import { Rating, AirbnbRating } from "react-native-elements";
-import { dbAddStatus, dbGetStatus } from "../firebase";
+import { dbAddStatus, dbGetStatus, dbGetRating, dbAddComment } from "../firebase";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 
@@ -24,12 +24,14 @@ const BookDetails = () => {
     const {id, authorName} = useParams();
     const [book, setBook] = React.useState({});
     const [checked, setChecked] = React.useState('Brak');
-    const [tempChecked, setTempChecked] = React.useState(checked);
+    const [tempChecked, setTempChecked] = React.useState();
     const [error, setError] = React.useState('');
     const [visible, setVisible] = React.useState(false);
     const [logTimeModalVisible, setLogTimeModalVisible] = React.useState(false);
     const [date, setDate] = React.useState(new Date(Date.now()));
     const [logTimeValue, setLogTimeValue] = React.useState();
+    const [rating, setRating] = React.useState(3);
+    const [tempRating, setTempRating] = React.useState(3);
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
@@ -51,13 +53,31 @@ const BookDetails = () => {
         });
         }
 
+
+
         const getBookStatus = async () => {
             const status = await dbGetStatus(auth.currentUser.uid, id);
-            if (typeof status === Array) {
+            if (status.length > 0) {
                 setChecked(status[0].status);
+                setTempChecked(status[0].status);
             }
         }
 
+        const getBookRating = async () => {
+            const ratings = await dbGetRating(auth.currentUser.uid, id);
+            let avgRating = 5;
+            if (ratings.length > 0) {
+                avgRating = 0;
+                ratings.forEach(el => {
+                    avgRating += el.rating;
+                })
+                avgRating = avgRating/ratings.length;
+            }
+            setRating(Math.round(avgRating))
+
+        }
+
+        getBookRating();
         getBookStatus();
         checkDbFavourites();
         
@@ -108,9 +128,19 @@ const BookDetails = () => {
         setChecked(tempChecked);
         hideModal();
     }
+
+    const addRating = () => {
+        dbAddRating(auth.currentUser.uid, id, tempRating);
+        setRating(tempRating);
+    }
+
+    const logTime = () => {
+        dbAddTime(auth.currentUser.uid, id,Number.parseInt(logTimeValue), date);
+        hideLogTimeModal();
+    }
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
+        // setShow(Platform.OS === 'ios');
         setDate(currentDate);
       };
     
@@ -143,8 +173,8 @@ const BookDetails = () => {
             </View>
           </Card.Content>
             <Card.Actions>
-                <Button onPress={hideModal}>Cancel</Button>
-                <Button onPress={setBookStatus}>Ok</Button>
+                <Button onPress={hideLogTimeModal}>Cancel</Button>
+                <Button onPress={logTime}>Ok</Button>
             </Card.Actions>
             </Card>
             </Modal>
@@ -217,8 +247,8 @@ const BookDetails = () => {
                               <Text style={{ color: Colors.grey600, fontSize: 24, marginTop: 5 }}>{book.author_name ? book.author_name : "Autor nieznany"} </Text>
                             </View>
                             <Text style={{ color: Colors.grey600, fontSize: 12, marginTop: 5 }}>{ book.description ? book.description : "Oops! Autor nie przygotował opisu tej ksiąki!"}</Text>
-                            <BigStars />
-                            <View style={{marginTop: 15, flexDirection: 'row', marginLeft: 'auto', marginRight: 'auto'}}><Text style={{marginRight: 5, fontSize: 17}}>{`Aktualny status książki:`}</Text><Text style={{color: 'green', fontSize: 17}}>{`${checked === 'Plan to read' ? 'Chcę przeczytać' : (checked === 'Reading' ? 'W trakcie czytania' : 'Przeczytana')}`}</Text></View>
+                            <BigStars number={rating} />
+                            <View style={{marginTop: 15, flexDirection: 'row', marginLeft: 'auto', marginRight: 'auto'}}><Text style={{marginRight: 5, fontSize: 17}}>{`Aktualny status książki:`}</Text><Text style={{color: 'green', fontSize: 17}}>{`${checked === 'Plan to read' ? 'Chcę przeczytać' : (checked === 'Reading' ? 'W trakcie czytania' : (checked === 'Finished' ? 'Przeczytana' : 'Brak'))}`}</Text></View>
                             <Button icon="plus" mode="outlined"  style={{ marginTop: 10 }} onPress={() => showModal()}>
                                 Zmień status książki
                             </Button>
@@ -227,17 +257,18 @@ const BookDetails = () => {
                             </Button>
                             {markBookModal()}
                             {logTimeModal()}
-                            <CommentList />
+                            <CommentList bookId={id}/>
                             <View style={{flexDirection: 'row', alignItems: 'center', paddingBottom: 20, alignSelf: 'center'}}>
                                 <Rating
                                 showRating
                                 imageSize={27}
                                 type="custom"
                                 tintColor={Colors.grey200}
+                                onFinishRating={(rating) => setTempRating(rating)}
                                 ratingBackgroundColor='#c8c7c8'
                                 style={{ paddingVertical: 10, size: 10, marginRight: 25}}
                                 />
-                                <Button mode="outlined"><Text style={{fontSize: 17}}>Oceń </Text></Button>
+                                <Button mode="outlined" onPress={addRating}><Text style={{fontSize: 17}}>Oceń </Text></Button>
 
                             </View>
                         </Card.Content>
