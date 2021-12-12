@@ -61,12 +61,17 @@ async function dbCheck(collection, document){
   // });
 }
 
+//DEPRECATED
 async function dbAdd(collectionName, documentName, data) {
   await db.collection(collectionName).doc(documentName).set(data);
 }
 
 async function dbUpdate(collectionName, documentName, data) {
   await db.collection(collectionName).doc(documentName).update(data);
+}
+
+async function dbSet(collectionName, data){
+  await db.collection(collectionName).add(data)
 }
 
 /*Testowa funkcja dodająca wartości do bazy
@@ -96,87 +101,132 @@ async function GetFirebaseUUID(){
   return db.collection("IDgenerator").add({a : 1}).then((doc) => doc.id);
 }
 
-let timestamp = firebase.firestore.FieldValue.serverTimestamp
-
+function timestamp(){
+  let dateTime = new Date();
+  return dateTime
+}
 
 async function dbAddStatus(user_id, book_id, status){
   let data = {
-    [book_id] : status
+    user_id : user_id,
+    book_id : book_id,
+    status : status
   }
-
-  if(dbCheck(collections.statuses, user_id)) dbUpdate(collections.statuses, user_id, data)
-  else dbAdd(collections.statuses, user_id, data)
+  await dbSet(collections.statuses, data)
 }
 
 async function dbAddComment(user_id, book_id, comment){
-  let comment_id = await GetFirebaseUUID()
-  let today = new Date();
-  let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-  let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  let dateTime = date+' '+time;
+
   let data = {
-    [comment_id] : [user_id, dateTime, comment]
+    user_id : user_id, 
+    dateTime : timestamp(),
+    comment : comment,
+    book_id : book_id
   }
 
-  if(await dbCheck(collections.comments, book_id)) await dbUpdate(collections.comments, book_id, data)
-  else {
-    console.log(data)
-    await dbAdd(collections.comments, book_id, data)
-  }
+  await dbSet(collections.comments, data)
 }
-
-// async function dbSetFavourite(user_id, book_id){
-//   let data = {
-//     [user_id] : book_id
-//   }
-
-//   if(dbCheck(collections.favourites, user_id)) dbUpdate(collections.favourites, user_id, data)
-//   else dbAdd(collections.favourites, user_id, data)
-// }
 
 async function dbAddRating(user_id, book_id, rating){
   let data = {
-    [book_id] : rating
+    book_id : book_id,
+    rating : rating,
+    user_id : user_id
   }
 
-  if(await dbCheck(collections.rating, user_id)) 
-  await dbUpdate(collections.ratings, user_id, data)
-  else await dbAdd(collections.rating, user_id, data)
+  await dbSet(collections.ratings, data)
 }
 
-async function dbAddReadBook(user_id, book_id){
-  // if(dbCheck(collections.rating, user_id)) {
-  //   db.collection(collections.rating).doc(user_id).get('books').push(book_id)
-  //   dbUpdate(collections.ratings, user_id, data)
-  // }
-  // else dbAdd(collections.rating, user_id, [book_id])
+// async function dbAddReadBook(user_id, book_id){
+//   let data = {
+//     user_id : user_id,
+//     book_id : book_id
+//   }
 
-  let data = {
-    books : arrayUnion(book_id)
-  }
-
-  if(await dbCheck(collections.read_books, user_id)) await dbUpdate(collections.read_books, user_id, data)
-  else await dbAdd(collections.read_books, user_id, data)
-}
+//   await dbSet(collections.read_books, data)
+// }
 
 async function dbAddTime(user_id, book_id, time){
   let data = {
-    [book_id] : time
+    book_id : book_id,
+    time : time,
+    user_id : user_id,
+    dateTime : timestamp()
   }
 
-  if(await dbCheck(collections.times, user_id)) await dbUpdate(collections.times, user_id, data)
-  else await dbAdd(collections.times, user_id, data)
+  await dbSet(collections.times, data)
 }
 
-async function dbAddTimePlanned(user_id, book_id, hours){
+async function dbAddTimePlanned(user_id, hours){
   let data = {
-    dates : arrayUnion(timestamp()),
-    hours : arrayUnion(hours)
+    user_id : user_id,
+    hours : hours,
+    dateTime : timestamp()
   }
 
-  if(await dbCheck(collections.time_planned, user_id)) await dbUpdate(collections.time_planned, user_id, data)
-  else await dbAdd(collections.time_planned, user_id, data)
+  await dbSet(collections.time_planned, data)
 }
 
+//TO TEST
+async function dbGetDoc(collection, doc){
+  if(await dbCheck(collection, doc)) return db.collection(collection).doc(doc)
+  else return undefined 
+}
 
-export { db , app , auth , dbAdd, dbUpdate, dbAddComment, dbAddRating, dbAddReadBook, dbAddStatus, dbAddTime, dbAddTimePlanned }
+async function dbGetField(collection, doc, field){
+  try{
+    return dbGetDoc(collection, doc).get(field)
+  } catch(error){
+    console.log(error)
+    return undefined
+  }
+}
+
+async function dbGetData(collection, doc){
+  try{
+    return dbGetDoc(collection, doc)
+  } catch(error){
+    console.log(error)
+    return undefined
+  }
+}
+
+async function dbGetStatus(user_id, book_id){
+  return await dbGetField(collections.statuses, user_id, book_id)
+}
+
+async function dbGetUserStatuses(user_id){
+  return await dbGetData(collections.statuses, user_id)
+}
+
+async function dbGetComments(book_id){
+  return await dbGetData(collections.comments, book_id)
+}
+
+async function dbGetRating(user_id, book_id){
+  return await dbGetField(collections.ratings, user_id, book_id)
+}
+
+async function dbGetUserRatings(user_id){
+  return await dbGetData(collections.ratings, user_id)
+}
+
+async function dbGetReadBooks(user_id){
+  return await dbGetData(collections.read_books, user_id)
+}
+
+async function dbGetTimes(user_id, book_id){
+  return await dbGetField(collections.times, user_id, book_id)
+}
+
+async function dbGetUserTimes(user_id){
+  return await dbGetData(collections.times, user_id)
+}
+
+async function dbGetUserTimesPlanned(user_id){
+  return await dbGetData(collections.time_planned, user_id)
+}
+
+export { db , app , auth ,
+   dbAdd, dbUpdate, dbAddComment, dbAddRating, dbAddReadBook, 
+   dbAddStatus, dbAddTime, dbAddTimePlanned }
