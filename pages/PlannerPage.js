@@ -16,6 +16,7 @@ const PlannerPage = () => {
   const [comeBackDisabled, setComeBackDisabled] = React.useState(true);
   const [loadMoreDisabled, setLoadMoreDisabled] = React.useState(false);
   const [offset, setOffset] = React.useState(0);
+  const [refreshPlan, setRefreshPlan] = React.useState(false);
 
   
   const [visible, setVisible] = React.useState(false);
@@ -120,9 +121,10 @@ const PlannerPage = () => {
 
       tempStatsArray = tempStatsArray.slice(offset, offset + 2);
       setStatsResult(tempStatsArray);
+      setRefreshPlan(false)
     }
     getStats();
-   }, [offset])
+   }, [offset, refreshPlan])
   
   const loadMore = () => {
         setOffset(offset + 2)
@@ -163,6 +165,7 @@ const showDatePicker = () => {
   const createPlan = () => {
     dbAddTimePlanned(auth.currentUser.uid, parseInt(value), date);
     let msg = "Plan został dodany!"
+    setRefreshPlan(true);
     hideModal();
     if (Platform.OS === 'android') {
       ToastAndroid.show(msg, ToastAndroid.SHORT)

@@ -52,6 +52,7 @@ if (!firebase.apps.length) {
 const db = app.firestore()
 const auth = app.auth()
 
+
 async function dbCheck(collection, document){
   
   let docRef = db.collection(collection).doc(document).get().then((doc) => {
