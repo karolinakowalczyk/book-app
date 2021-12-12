@@ -1,5 +1,5 @@
 import React from "react";
-import { auth, dbAdd, dbAddComment } from "../firebase.js";
+import { auth, dbAdd, dbAddComment, dbGetComments, dbGetReadBooks, dbAddStatus } from "../firebase.js";
 import { Redirect, Link } from "react-router-native";
 import { TextInput, Button } from "react-native-paper";
 import { View, Text,StyleSheet } from "react-native";
@@ -20,13 +20,18 @@ const Register = () => {
     setValues(newValues);
   };
   const createUser = () => {
-    // const data = {
-    //   idDB: 'testInny',
-    //   valueDB: 240
-    // }
+    const data = {
+      today: new Date(),
+      valueDB: 240
+    }
     
     // dbAdd('users', 'user1', data);
-    dbAddComment("user", "book", "this book sucks")
+    //dbAddComment("user", "book", "this book sucks")
+    //let z = dbGetReadBooks("userID")
+    //dbAddStatus("user1", "book1", "reading")
+    //dbAddComment("user1", "bbok1", "This book rocks")
+    let z = dbGetComments("bbok1").then((data) => console.log(data))
+    console.log(z)
 
     
     if (!values.every((el) => el !== null)) return;

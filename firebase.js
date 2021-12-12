@@ -101,6 +101,14 @@ async function GetFirebaseUUID(){
   return db.collection("IDgenerator").add({a : 1}).then((doc) => doc.id);
 }
 
+function mkFilter(field, operation, value){
+  return {
+    field : field,
+    op : operation,
+    value : value
+  }
+}
+
 function timestamp(){
   let dateTime = new Date();
   return dateTime
@@ -167,7 +175,7 @@ async function dbAddTimePlanned(user_id, hours){
   await dbSet(collections.time_planned, data)
 }
 
-//TO TEST
+//GETS
 async function dbGetDoc(collection, doc){
   if(await dbCheck(collection, doc)) return db.collection(collection).doc(doc)
   else return undefined 
@@ -191,8 +199,23 @@ async function dbGetData(collection, doc){
   }
 }
 
+async function dbGet(collection, filter){
+  let data = []
+  await db.collection(collection).where(filter.field, filter.op, filter.value).get().then((querySnapshot) => {
+    querySnapshot.forEach(element => {
+      console.log("DUPA")
+      data.push(element.data())
+    })
+  })
+  // snapshot.forEach(element => {
+  //   console.log("DUPA")
+  //   data.push(element.data())
+  // })
+  return data
+}
+
 async function dbGetStatus(user_id, book_id){
-  return await dbGetField(collections.statuses, user_id, book_id)
+  return await dbGet(collection.statuses, mkFilter(""))
 }
 
 async function dbGetUserStatuses(user_id){
@@ -200,7 +223,7 @@ async function dbGetUserStatuses(user_id){
 }
 
 async function dbGetComments(book_id){
-  return await dbGetData(collections.comments, book_id)
+  return await dbGet(collections.comments, mkFilter("book_id", "==", book_id))
 }
 
 async function dbGetRating(user_id, book_id){
@@ -228,5 +251,5 @@ async function dbGetUserTimesPlanned(user_id){
 }
 
 export { db , app , auth ,
-   dbAdd, dbUpdate, dbAddComment, dbAddRating, dbAddReadBook, 
+   dbAdd, dbUpdate, dbAddComment, dbAddRating, dbGetComments, 
    dbAddStatus, dbAddTime, dbAddTimePlanned }
