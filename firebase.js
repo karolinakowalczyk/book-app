@@ -61,12 +61,17 @@ async function dbCheck(collection, document){
   // });
 }
 
+//DEPRECATED
 async function dbAdd(collectionName, documentName, data) {
   await db.collection(collectionName).doc(documentName).set(data);
 }
 
 async function dbUpdate(collectionName, documentName, data) {
   await db.collection(collectionName).doc(documentName).update(data);
+}
+
+async function dbSet(collenctionName, data){
+  await db.collection(collectionName).add(data)
 }
 
 /*Testowa funkcja dodająca wartości do bazy
@@ -101,11 +106,11 @@ let timestamp = firebase.firestore.FieldValue.serverTimestamp
 
 async function dbAddStatus(user_id, book_id, status){
   let data = {
-    [book_id] : status
+    user_id : user_id,
+    book_id : book_id,
+    status : status
   }
-
-  if(dbCheck(collections.statuses, user_id)) dbUpdate(collections.statuses, user_id, data)
-  else dbAdd(collections.statuses, user_id, data)
+  dbSet(collections.statuses, data)
 }
 
 async function dbAddComment(user_id, book_id, comment){
@@ -177,11 +182,11 @@ async function dbGetField(collection, doc, field){
     console.log(error)
     return undefined
   }
-}
+
 
 async function dbGetData(collection, doc){
   try{
-    return dbGetDoc(collection, doc).get()
+    return dbGetDoc(collection, doc)
   } catch(error){
     console.log(error)
     return undefined
