@@ -4,6 +4,7 @@
 import { firebase, arrayUnion } from "@firebase/app";
 import '@firebase/auth'
 import '@firebase/firestore'
+import moment from 'moment'
 //import { getAnalytics } from "firebase/analytics";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -42,11 +43,11 @@ const book_statuses = {
 // Initialize Firebase
 let app;
 
-//if (!firebase.apps.length) {
+if (!firebase.apps.length) {
   app = firebase.initializeApp(firebaseConfig);
-//} else {
-//  firebase.app();
-//}
+} else {
+  firebase.app();
+}
 
 const db = app.firestore()
 const auth = app.auth()
@@ -153,7 +154,7 @@ async function dbAddRating(user_id, book_id, rating){
     user_id : user_id
   }
 
-  let check = await dbGetStatus(user_id, book_id)
+  let check = await dbGetRating(user_id, book_id)
   if(check.length == 0) await dbSet(collections.ratings, data)
   else dbUpdate(collections.ratings, check[0].id, data)
 }
@@ -277,34 +278,49 @@ async function dbGetUserTimesPlanned(user_id){
   return await dbGet(collections.time_planned, mkFilter('user_id', '==', user_id))
 }
 
-function getWeekNumber(d){
-  
-  d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-  let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-  let weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-  return {
-    week : weekNo,
-    year : d.getUTCFullYear()
-  }
-}
-
 async function GetPlanningStats(user_id){
-  let yearWeekNow = getWeekNumber(new Date())
   let plans = await dbGetUserTimesPlanned(user_id)
   let times = await dbGetUserTimes(user_id)
 
-  let stat_times = [{
-    year : 0,
-    week : 0,
-    done : 0
-  }]
+  let planWeek = {}
+  let timesWeek = {}
 
-  let stat_planned = [{
-    year : 0,
-    week : 0,
-    planned : 0
-  }]
+  for(let i in plans){
+    let date = moment(plans[i].dateTime.toDate())
+    let weekStart = moment(date.startOf('isoWeek'))
+    let weekEnd = moment(date.endOf('isoWeek'))
+
+    if(planWeek[weekStart] == undefined){
+      planWeek[weekStart] = {
+        weekEnd : weekEnd,
+        hours : plans[i].hours
+      }
+    }
+    else{
+      planWeek[weekStart].hours += plans[i].hours
+    }
+  }
+
+  for(let i in times){
+    let date = moment(times[i].dateTime.toDate())
+    let weekStart = moment(date.startOf('isoWeek'))
+    let weekEnd = moment(date.endOf('isoWeek'))
+
+    if(timesWeek[weekStart] == undefined){
+      timesWeek[weekStart] = {
+        weekEnd : weekEnd,
+        hours : times[i].time
+      }
+    }
+    else{
+      timesWeek[weekStart].hours += times[i].time
+    }
+  }
+
+  return {
+    plans : planWeek,
+    done: timesWeek
+  }
 
 }
 
@@ -312,4 +328,4 @@ export { db , app , auth ,
    dbAdd, dbUpdate, dbAddComment, dbAddRating, dbGetComments, 
    dbAddStatus, dbAddTime, dbAddTimePlanned,
   dbGetStatus, dbGetUserStatuses, dbGetRating, dbGetUserRatings,
-   dbGetReadBooks, dbGetTimes, dbGetUserTimes, dbGetUserTimesPlanned }
+   dbGetReadBooks, dbGetTimes, dbGetUserTimes, dbGetUserTimesPlanned, GetPlanningStats }
