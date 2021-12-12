@@ -34,11 +34,11 @@ const collections = {
 // Initialize Firebase
 let app;
 
-//if (!firebase.apps.length) {
+if (!firebase.apps.length) {
   app = firebase.initializeApp(firebaseConfig);
-//} else {
-//  firebase.app();
-//}
+} else {
+ firebase.app();
+}
 
 const db = app.firestore()
 const auth = app.auth()
