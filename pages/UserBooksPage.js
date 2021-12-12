@@ -37,7 +37,6 @@ const UserBooksPage = () => {
         setLoadMoreDisabled(true);
     }
       setBooks(booksFetched);
-      console.log(books[0])
   };
   
   fetchBooks();
@@ -64,7 +63,6 @@ const comeBack = () => {
     }
     for (let i=0; i < elementsAmount; i++) {
       if (books[i].status === status) {
-        console.log(books[i])
         booksJSX.push(
           <View style={{flexBasis: '33%', alignItems: 'center', marginTop: 10}}>
             <Link  to={`/book-details/${books[i].book_id}/${books[i].author_name}`}>
