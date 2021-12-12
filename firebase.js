@@ -201,10 +201,12 @@ async function dbGetData(collection, doc){
 
 async function dbGet(collection, filter){
   let data = []
-  (await db.collection(collection).where(filter.field, filter.op, filter.value).get())
-  .forEach(element => {
+  const snapshot = await db.collection(collection).where(filter.field, filter.op, filter.value).get()
+  snapshot.forEach(element => {
+    console.log("DUPA")
     data.push(element)
-  });
+  })
+  return data
 }
 
 async function dbGetStatus(user_id, book_id){
