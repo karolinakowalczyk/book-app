@@ -42,11 +42,11 @@ const book_statuses = {
 // Initialize Firebase
 let app;
 
-//if (!firebase.apps.length) {
+if (!firebase.apps.length) {
   app = firebase.initializeApp(firebaseConfig);
-//} else {
-//  firebase.app();
-//}
+} else {
+ firebase.app();
+}
 
 const db = app.firestore()
 const auth = app.auth()
@@ -158,14 +158,14 @@ async function dbAddRating(user_id, book_id, rating){
   else dbUpdate(collections.ratings, check[0].id, data)
 }
 
-// async function dbAddReadBook(user_id, book_id){
-//   let data = {
-//     user_id : user_id,
-//     book_id : book_id
-//   }
+async function dbAddReadBook(user_id, book_id){
+  let data = {
+    user_id : user_id,
+    book_id : book_id
+  }
 
-//   await dbSet(collections.read_books, data)
-// }
+  await dbSet(collections.read_books, data)
+}
 
 async function dbAddTime(user_id, book_id, time){
   let data = {
