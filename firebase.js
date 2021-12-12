@@ -4,7 +4,7 @@
 import { firebase, arrayUnion } from "@firebase/app";
 import '@firebase/auth'
 import '@firebase/firestore'
-import 'moment'
+import moment from 'moment'
 //import { getAnalytics } from "firebase/analytics";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -43,11 +43,11 @@ const book_statuses = {
 // Initialize Firebase
 let app;
 
-//if (!firebase.apps.length) {
+if (!firebase.apps.length) {
   app = firebase.initializeApp(firebaseConfig);
-//} else {
-//  firebase.app();
-//}
+} else {
+  firebase.app();
+}
 
 const db = app.firestore()
 const auth = app.auth()
@@ -286,34 +286,34 @@ async function GetPlanningStats(user_id){
   let timesWeek = {}
 
   for(let i in plans){
-    let date = moment(plans[i].dateTime)
-    let weekStart = date.startOf('week')
-    let weekEnd = date.endOf('week')
+    let date = moment(plans[i].dateTime.toDate())
+    let weekStart = moment(date.startOf('isoWeek'))
+    let weekEnd = moment(date.endOf('isoWeek'))
 
-    if(planWeek.weekStart == undefined){
-      planWeek.weekStart = {
+    if(planWeek[weekStart] == undefined){
+      planWeek[weekStart] = {
         weekEnd : weekEnd,
         hours : plans[i].hours
       }
     }
     else{
-      planWeek.weekStart.hours += plans[i].hours
+      planWeek[weekStart].hours += plans[i].hours
     }
   }
 
   for(let i in times){
-    let date = moment(times[i].dateTime)
-    let weekStart = date.startOf('week')
-    let weekEnd = date.endOf('week')
+    let date = moment(times[i].dateTime.toDate())
+    let weekStart = moment(date.startOf('isoWeek'))
+    let weekEnd = moment(date.endOf('isoWeek'))
 
-    if(timesWeek.weekStart == undefined){
-      timesWeek.weekStart = {
+    if(timesWeek[weekStart] == undefined){
+      timesWeek[weekStart] = {
         weekEnd : weekEnd,
         hours : times[i].time
       }
     }
     else{
-      timesWeek.weekStart.hours += times[i].time
+      timesWeek[weekStart].hours += times[i].time
     }
   }
 
@@ -328,4 +328,4 @@ export { db , app , auth ,
    dbAdd, dbUpdate, dbAddComment, dbAddRating, dbGetComments, 
    dbAddStatus, dbAddTime, dbAddTimePlanned,
   dbGetStatus, dbGetUserStatuses, dbGetRating, dbGetUserRatings,
-   dbGetReadBooks, dbGetTimes, dbGetUserTimes, dbGetUserTimesPlanned }
+   dbGetReadBooks, dbGetTimes, dbGetUserTimes, dbGetUserTimesPlanned, GetPlanningStats }
