@@ -168,22 +168,22 @@ async function dbAddRating(user_id, book_id, rating){
 //   await dbSet(collections.read_books, data)
 // }
 
-async function dbAddTime(user_id, book_id, time){
+async function dbAddTime(user_id, book_id, time, dateTime){
   let data = {
     book_id : book_id,
     time : time,
     user_id : user_id,
-    dateTime : timestamp()
+    dateTime : dateTime
   }
 
   await dbSet(collections.times, data)
 }
 
-async function dbAddTimePlanned(user_id, hours){
+async function dbAddTimePlanned(user_id, hours, dateTime){
   let data = {
     user_id : user_id,
     hours : hours,
-    dateTime : timestamp()
+    dateTime : dateTime
   }
 
   await dbSet(collections.time_planned, data)
