@@ -7,14 +7,15 @@ import {
 import React from 'react';
 import BackButton from "../components/BackButton";
 import { Colors, Card, IconButton, Button, RadioButton,
-    Modal, Portal,  Provider } from "react-native-paper";
+    Modal, Portal,  Provider, TextInput} from "react-native-paper";
 import BigStars from "../components/BigStars";
 import CommentList from "../components/CommentList";
 import OpenLibraryAPI from "../OpenLibraryAPI";
 import { useParams } from "react-router";
 import { auth, db } from "../firebase";
 import { Rating, AirbnbRating } from "react-native-elements";
-import { dbAddStatus } from "../firebase";
+import { dbAddStatus, dbGetStatus } from "../firebase";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 
@@ -22,12 +23,18 @@ const BookDetails = () => {
     const [filledHeart, setFilledHeart] = React.useState(false);
     const {id, authorName} = useParams();
     const [book, setBook] = React.useState({});
-    const [checked, setChecked] = React.useState('Reading');
+    const [checked, setChecked] = React.useState('Brak');
     const [tempChecked, setTempChecked] = React.useState(checked);
     const [error, setError] = React.useState('');
     const [visible, setVisible] = React.useState(false);
+    const [logTimeModalVisible, setLogTimeModalVisible] = React.useState(false);
+    const [date, setDate] = React.useState(new Date(Date.now()));
+    const [logTimeValue, setLogTimeValue] = React.useState();
+
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
+    const showLogTimeModal = () => setLogTimeModalVisible(true);
+    const hideLogTimeModal = () => setLogTimeModalVisible(false);
 
     React.useEffect(() => {
         const checkDbFavourites = () => {
@@ -43,13 +50,22 @@ const BookDetails = () => {
             })
         });
         }
+
+        const getBookStatus = async () => {
+            const status = await dbGetStatus(auth.currentUser.uid, id);
+            if (typeof status === Array) {
+                setChecked(status[0].status);
+            }
+        }
+
+        getBookStatus();
         checkDbFavourites();
         
             
     
         OpenLibraryAPI.getBook(id).then(
             data => {
-                console.log(data);
+                
                 if (data.description && data.description.type) {
                     setBook({...data, author_name: authorName, description: data.description.value})
                 }
@@ -86,19 +102,58 @@ const BookDetails = () => {
        });
     }
     }
-    const  markBook = () => {
-        
-        //TO DO: implement this method
-    }
 
     const setBookStatus = () => {
         dbAddStatus(auth.currentUser.uid, id, tempChecked);
         setChecked(tempChecked);
         hideModal();
     }
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+      };
+    
+    const logTimeModal = () => {
+        return (
+            <Portal>
+              <Modal visible={logTimeModalVisible} onDismiss={hideLogTimeModal} >
+              <Card style={{ width: '95%',  alignSelf: 'center'}}>
+          <Card.Title title="Zaloguj czas" />
+          <Card.Content>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={{ marginRight: 10}}>Za jaki dzień zalogować czas:</Text>
+            <DateTimePicker
+                style={{width: 200}}
+                testID="dateTimePicker"
+                value={date}
+                mode="date"
+                is24Hour={true}
+                display="default"
+                onChange={onChange}
+            />
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{ marginRight: 10}}>Ile godzin zalogować:</Text>
+                <TextInput
+                    style={{width: 35, height: 35}}
+                    value={logTimeValue}
+                    onChangeText={text => setLogTimeValue(text)}
+                />
+            </View>
+          </Card.Content>
+            <Card.Actions>
+                <Button onPress={hideModal}>Cancel</Button>
+                <Button onPress={setBookStatus}>Ok</Button>
+            </Card.Actions>
+            </Card>
+            </Modal>
+            </Portal>
+        
+        )
+    }
 
     const markBookModal = () => {
-        
         return (
             
             <Portal>
@@ -163,14 +218,15 @@ const BookDetails = () => {
                             </View>
                             <Text style={{ color: Colors.grey600, fontSize: 12, marginTop: 5 }}>{ book.description ? book.description : "Oops! Autor nie przygotował opisu tej ksiąki!"}</Text>
                             <BigStars />
-                            <View style={{marginTop: 15, flexDirection: 'row', marginLeft: 'auto', marginRight: 'auto'}}><Text style={{marginRight: 5, fontSize: 20}}>{`Aktualny status książki:`}</Text><Text style={{color: 'green', fontSize: 20}}>{`${checked}`}</Text></View>
+                            <View style={{marginTop: 15, flexDirection: 'row', marginLeft: 'auto', marginRight: 'auto'}}><Text style={{marginRight: 5, fontSize: 17}}>{`Aktualny status książki:`}</Text><Text style={{color: 'green', fontSize: 17}}>{`${checked === 'Plan to read' ? 'Chcę przeczytać' : (checked === 'Reading' ? 'W trakcie czytania' : 'Przeczytana')}`}</Text></View>
                             <Button icon="plus" mode="outlined"  style={{ marginTop: 10 }} onPress={() => showModal()}>
                                 Zmień status książki
                             </Button>
-                            <Button icon="plus" mode="outlined"  style={{ marginTop: 10 }} onPress={() => showModal()}>
+                            <Button icon="plus" mode="outlined"  style={{ marginTop: 10 }} onPress={() => showLogTimeModal()}>
                                 Zaloguj czas
                             </Button>
                             {markBookModal()}
+                            {logTimeModal()}
                             <CommentList />
                             <View style={{flexDirection: 'row', alignItems: 'center', paddingBottom: 20, alignSelf: 'center'}}>
                                 <Rating

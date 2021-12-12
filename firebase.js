@@ -216,7 +216,6 @@ async function dbGet(collection, filter){
   let data = []
   await db.collection(collection).where(filter.field, filter.op, filter.value).get().then((querySnapshot) => {
     querySnapshot.forEach(element => {
-      console.log("DUPA")
       let d = element.data()
       d.id = element.id
       data.push(d)
@@ -232,7 +231,6 @@ async function dbGet2Filter(collection, filter1, filter2){
   where(filter2.field, filter2.op, filter2.value)
   .get().then((querySnapshot) => {
     querySnapshot.forEach(element => {
-      console.log("DUPA")
       let d = element.data()
       d.id = element.id
       data.push(d)
