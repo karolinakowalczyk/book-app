@@ -15,31 +15,31 @@ const UserBooksPage = () => {
   const [offset, setOffset] = React.useState(0);
 
   useEffect(() => {
-    const checkUserFavourites = () => {
-      const books = [];
+    const checkUserFavourites = async () => {
+      const booksFetched = [];
       // let collectionName = "favourite-books";
       // if (btnSelected === 1) {
       //   collectionName = 
       // }
-      db.collection("favourite-books")
+      await db.collection("favourite-books")
       .where("user_id", "==", auth.currentUser.uid)
       .get()
       .then((querySnapshot) => {
           querySnapshot.forEach(doc => {
-              books.push(doc.data());
+              booksFetched.push(doc.data());
           })
       });
-      if (books.length > offset + 3) {
+      if (booksFetched.length > offset + 3) {
         setLoadMoreDisabled(false);
     } 
     else {
         setLoadMoreDisabled(true);
     }
-      setBooks(books);
+      setBooks(booksFetched);
   };
   
   checkUserFavourites();
-  }, [offset, btnSelected])
+  }, [])
 
   const loadMore = () => {
     setOffset(offset + 3)
@@ -60,6 +60,7 @@ const comeBack = () => {
     if (books.length < itemsPerPage) {
       elementsAmount = books.length;
     }
+    
     for (let i=0; i < elementsAmount; i++) {
         //TO DO: add book props or maybe rewrite whole function
       booksJSX.push(<View key={i} style={{ flexBasis: '30%', alignItems: 'center', marginTop: 20}}><Book book={books[i]}/></View>)

@@ -22,7 +22,8 @@ const BookDetails = () => {
     const [filledHeart, setFilledHeart] = React.useState(false);
     const {id, authorName} = useParams();
     const [book, setBook] = React.useState({});
-    const [checked, setChecked] = React.useState('reading');
+    const [checked, setChecked] = React.useState('Reading');
+    const [tempChecked, setTempChecked] = React.useState(checked);
     const [error, setError] = React.useState('');
     const [visible, setVisible] = React.useState(false);
     const showModal = () => setVisible(true);
@@ -91,11 +92,13 @@ const BookDetails = () => {
     }
 
     const setBookStatus = () => {
-        dbAddStatus(auth.currentUser.uid, id, checked);
+        dbAddStatus(auth.currentUser.uid, id, tempChecked);
+        setChecked(tempChecked);
         hideModal();
     }
 
     const markBookModal = () => {
+        
         return (
             
             <Portal>
@@ -105,36 +108,37 @@ const BookDetails = () => {
           <Card.Content>
           <View style={{flexDirection: 'row', marginTop: 10, alignItems: 'center', borderRadius: 7, borderColor: Colors.purple600, borderWidth: 1}}>
             <RadioButton
-            value="willRead"
-            status={ checked === 'willRead' ? 'checked' : 'unchecked' }
-            onPress={() => setChecked('willRead')}
+            value="Plan to read"
+            status={ tempChecked === 'Plan to read' ? 'checked' : 'unchecked' }
+            onPress={() => setTempChecked('Plan to read')}
             />
+
             <Text>Chcę przeczytać</Text>
             </View>
             <View style={{flexDirection: 'row', marginTop: 10, alignItems: 'center', borderRadius: 7, borderColor: Colors.purple600, borderWidth: 1}}>
             <RadioButton
-                value="reading"
-                status={ checked === 'reading' ? 'checked' : 'unchecked' }
-                onPress={() => setChecked('reading')}
+                value="Reading"
+                status={ tempChecked === 'Reading' ? 'checked' : 'unchecked' }
+                onPress={() => setTempChecked('Reading')}
             />
             <Text>W trakcie czytania</Text>
             </View>
             <View style={{flexDirection: 'row', marginTop: 10, alignItems: 'center', borderRadius: 7, borderColor: Colors.purple600, borderWidth: 1}}>
             <RadioButton
-                value="read"
-                status={ checked === 'read' ? 'checked' : 'unchecked' }
-                onPress={() => setChecked('read')}
+                value="Finished"
+                status={ tempChecked === 'Finished' ? 'checked' : 'unchecked' }
+                onPress={() => setTempChecked('Finished')}
             />
             <Text>Preczytana</Text>
             </View>
       
           </Card.Content>
-          <Card.Actions>
-            <Button onPress={hideModal}>Cancel</Button>
-            <Button onPress={setBookStatus}>Ok</Button>
-          </Card.Actions>
-        </Card>
-              </Modal>
+            <Card.Actions>
+                <Button onPress={hideModal}>Cancel</Button>
+                <Button onPress={setBookStatus}>Ok</Button>
+            </Card.Actions>
+            </Card>
+            </Modal>
             </Portal>
         
         )
@@ -159,8 +163,12 @@ const BookDetails = () => {
                             </View>
                             <Text style={{ color: Colors.grey600, fontSize: 12, marginTop: 5 }}>{ book.description ? book.description : "Oops! Autor nie przygotował opisu tej ksiąki!"}</Text>
                             <BigStars />
+                            <View style={{marginTop: 15, flexDirection: 'row', marginLeft: 'auto', marginRight: 'auto'}}><Text style={{marginRight: 5, fontSize: 20}}>{`Aktualny status książki:`}</Text><Text style={{color: 'green', fontSize: 20}}>{`${checked}`}</Text></View>
                             <Button icon="plus" mode="outlined"  style={{ marginTop: 10 }} onPress={() => showModal()}>
-                                Oznacz książkę
+                                Zmień status książki
+                            </Button>
+                            <Button icon="plus" mode="outlined"  style={{ marginTop: 10 }} onPress={() => showModal()}>
+                                Zaloguj czas
                             </Button>
                             {markBookModal()}
                             <CommentList />
