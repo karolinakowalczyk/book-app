@@ -61,10 +61,9 @@ return (
         <Card.Content>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity onPress={showDatePicker}>
-            <Text style={{ marginTop: 20 }}>{formatDate(date)}</Text>
-            </TouchableOpacity>
             {show && (
             <DateTimePicker
+            style={{width: 200}}
             value={date}
             minimumDate={Date.parse(new Date())}
             display='default'
@@ -72,6 +71,7 @@ return (
             onChange={onChange}
             />
             )}
+            </TouchableOpacity>
           </View> 
           <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
             <Text style={{marginRight: 10}}>Ile godzin poświęcisz na czytanie dziennie: </Text>

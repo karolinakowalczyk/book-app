@@ -5,6 +5,7 @@ import { Button } from 'react-native-paper';
 import Book from "../components/Book"
 import LoadMore from "../components/LoadMore"
 import { db, auth } from "../firebase";
+import { Link } from "react-router-native";
 
 const UserBooksPage = () => {
 
@@ -36,6 +37,7 @@ const UserBooksPage = () => {
         setLoadMoreDisabled(true);
     }
       setBooks(booksFetched);
+      console.log(books[0])
   };
   
   checkUserFavourites();
@@ -63,7 +65,13 @@ const comeBack = () => {
     
     for (let i=0; i < elementsAmount; i++) {
         //TO DO: add book props or maybe rewrite whole function
-      booksJSX.push(<View key={i} style={{ flexBasis: '30%', alignItems: 'center', marginTop: 20}}><Book book={books[i]}/></View>)
+      booksJSX.push(
+        <View style={{flexBasis: '33%', alignItems: 'center', marginTop: 10}}>
+          <Link  to={`/book-details/`}>
+            <Book book={books[i]}/>
+          </Link>
+        </View>
+      )
     }
     return booksJSX;
   }
