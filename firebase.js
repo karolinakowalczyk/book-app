@@ -200,11 +200,15 @@ async function dbGetData(collection, doc){
 }
 
 async function dbGet(collection, filter){
-  return db.collection(collection).where(filter.field, filter.op, filter.value).get().then((data) => data)
+  let data = []
+  (await db.collection(collection).where(filter.field, filter.op, filter.value).get())
+  .forEach(element => {
+    data.push(element)
+  });
 }
 
 async function dbGetStatus(user_id, book_id){
-  return await dbGetField(collections.statuses, user_id, book_id)
+  return await dbGet(collection.statuses, mkFilter(""))
 }
 
 async function dbGetUserStatuses(user_id){
