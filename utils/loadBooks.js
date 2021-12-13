@@ -8,15 +8,17 @@ import {search} from "../OpenLibraryAPI";
 
 export default loadBooks = async (filterType, filterValue, page=1, itemsPerPage=3) => {
     const books = await search(filterType, filterValue, itemsPerPage, page);
-    
     const booksComponents = [];
+    let elementsAmount = itemsPerPage;
 
-
-    for (let i=0; i < itemsPerPage; i++) {
+    if (books.docs.length < itemsPerPage) {
+        elementsAmount = books.docs.length;
+    }
+    for (let i=0; i < elementsAmount; i++) {
         
         const key = books.docs[i].key ? books.docs[i].key : undefined;
     
-        const authorName = books.docs[i].author_name[0] ? books.docs[i].author_name[0] : books.docs[i].author_name;
+        const authorName = typeof books.docs[i].author_name === Array ? books.docs[i].author_name[0] : (books.docs[i].author_name ? books.docs[i].author_name : 'Author unknown');
     
         //TO DO: add book props or maybe rewrite whole function
         booksComponents.push(

@@ -4,10 +4,9 @@ import BackButton from "../components/BackButton";
 import { useEffect } from "react";
 
 import { auth, db } from "../firebase.js"; 
-import { Avatar, Colors, Button, IconButton } from 'react-native-paper';
+import { Avatar, Colors } from 'react-native-paper';
 import Book from "../components/Book";
 import LoadMore from "../components/LoadMore";
-import OpenLibraryAPI from "../OpenLibraryAPI";
 import { Link } from "react-router-native";
 
 

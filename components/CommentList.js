@@ -1,13 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import {
   StyleSheet,
   View,
 } from 'react-native';
-import { Colors } from "react-native-paper";
+import firebase from 'firebase';
+import { Colors, Text } from "react-native-paper";
 import Comment from './Comment';
 import InputComment from './InputComment';
+import { auth } from '../firebase';
+import { dbGetComments, dbAddComment} from '../firebase';
 
 const CommentList = (props) => {
+  const {bookId} = props; 
 
     const [comments, setComments] = React.useState([]); // array for comments fetched from the API backend
     const [refreshing, setRefreshing] = React.useState(true); // whether comments list is being refreshed or not
@@ -15,27 +19,30 @@ const CommentList = (props) => {
   // Fetch comments when component is about to mount
 
 
-  React.useEffect(() => {
-        fetchComments(comments);
-  });
+  useEffect(() => {
+    const getBookComments = async () => {
+      const commentsDb = await dbGetComments(bookId);
+      if (commentsDb.length > 0) {
+        setComments(commentsDb);
+          // comments.forEach(comment => {
+          //     commentsJSX.push(
+          //         <View>
+                      
+          //         </View>
+          //     )
+          // })
+      }
 
-  // Re-fetch comments when user pulls the list down
-  //const onRefresh = () => fetchComments();
+    }
+  getBookComments();
+  }, []);
 
-  // Call API to fetch comments
-  const fetchComments = async (comments) => {
-      setRefreshing(true);
-      await setComments(comments);
-      setRefreshing(false);
-  };
 
   const addComment = (text) => {
-    setRefreshing(true);
-    comments.push(text);
-    //add comment to database
-    fetchComments(comments); 
-    setRefreshing(false);
-    
+    dbAddComment(auth.currentUser.uid, bookId, text);
+    const commentsCopy = [...comments]
+    commentsCopy.push({dateTime: firebase.firestore.Timestamp.fromDate(new Date()), comment: text, book_id: bookId})
+    setComments(commentsCopy);
   }
     return (
        <View style={styles.container}>
@@ -45,8 +52,6 @@ const CommentList = (props) => {
           {comments.map((comment, index) => <Comment comment={comment} key={index} />)}
             
         </View>
-        
- 
     );
   }
 
