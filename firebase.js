@@ -52,6 +52,7 @@ if (!firebase.apps.length) {
 const db = app.firestore()
 const auth = app.auth()
 
+
 async function dbCheck(collection, document){
   
   let docRef = db.collection(collection).doc(document).get().then((doc) => {
@@ -317,11 +318,10 @@ async function GetPlanningStats(user_id){
       timesWeek[weekStart].hours += times[i].time
     }
   }
-
-  return {
-    week : [...new Set(Object.keys(plans).concat(Object.keys(done)))],
+  return {  
     plans : planWeek,
-    done: timesWeek
+    done: timesWeek,
+    week : [...new Set(Object.keys(planWeek).concat(Object.keys(timesWeek)))]
   }
 
 }
