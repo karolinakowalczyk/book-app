@@ -102,11 +102,11 @@ const PlannerPage = () => {
             <Card key={index} style={{width: '85%', height: '45%', alignSelf: 'center', marginTop: 10}}>
               <Card.Content style={{ marginTop: 10, paddingBottom: 5 }}>
                 <Text numberOfLines={1} style={{ color: Colors.purple900, fontSize: 18 }}>Tydzień:</Text>
-                <Text numberOfLines={1} style={{ color: Colors.purple900, fontSize: 14 }}>{weekDate} - {weekEndDate}</Text>
-                  <Text numberOfLines={1} style={{ color: Colors.purple900, fontSize: 18 }}>Przeczytano:</Text>
-                  <Text numberOfLines={1} style={{ color: Colors.purple900, fontSize: 14 }}>{doneHours} h</Text>
-                  <Text numberOfLines={1} style={{ color: Colors.purple900, fontSize: 18 }}>Planowano:</Text>
-                  <Text numberOfLines={1} style={{ color: Colors.purple900, fontSize: 14 }}>Przeczytano: {plansHours} h</Text>
+                <Text numberOfLines={1} style={{ color: Colors.green600, fontSize: 14 }}>{weekDate} - {weekEndDate}</Text>
+                  <Text numberOfLines={1} style={{ color: Colors.purple900, fontSize: 18, marginTop: 10 }}>Przeczytano:</Text>
+                  <Text numberOfLines={1} style={{ color: Colors.green600, fontSize: 14 }}>{doneHours} h</Text>
+                  <Text numberOfLines={1} style={{ color: Colors.purple900, fontSize: 18, marginTop: 10 }}>Planowano:</Text>
+                  <Text numberOfLines={1} style={{ color: Colors.green600, fontSize: 14 }}>{plansHours} h</Text>
               </Card.Content>
               </Card>
             );
@@ -134,7 +134,9 @@ const PlannerPage = () => {
         if (offset >= 2) {
             setOffset(offset - 2)
         }
+        else {
         setComeBackDisabled(true);
+        }
     }
 
   const showModal = () => setVisible(true);
@@ -167,11 +169,11 @@ const showDatePicker = () => {
     let msg = "Plan został dodany!"
     setRefreshPlan(true);
     hideModal();
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(msg, ToastAndroid.SHORT)
-    } else {
-      AlertIOS.alert(msg);
-    }
+    // if (Platform.OS === 'android') {
+    //   ToastAndroid.show(msg, ToastAndroid.SHORT)
+    // } else {
+    //   AlertIOS.alert(msg);
+    // }
   };
 
 return (
@@ -182,8 +184,7 @@ return (
         <Card.Title title="Planuj!" subtitle="Ustaw następną statystykę"  />
         <Card.Content>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <TouchableOpacity onPress={showDatePicker}>
-            {show && (
+            
             <DateTimePicker
             style={{width: 200}}
             value={date}
@@ -192,8 +193,7 @@ return (
             mode={mode}
             onChange={onChange}
             />
-            )}
-            </TouchableOpacity>
+           
           </View> 
           <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
             <Text style={{marginRight: 10}}>Ile godzin poświęcisz na czytanie dziennie: </Text>

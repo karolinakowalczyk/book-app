@@ -64,9 +64,9 @@ const comeBack = () => {
     for (let i=0; i < elementsAmount; i++) {
       if (books[i].status === status) {
         booksJSX.push(
-          <View style={{flexBasis: '33%', alignItems: 'center', marginTop: 10}}>
-            <Link  to={`/book-details/${books[i].book_id}/${books[i].author_name}`}>
-              <Book book={books[i]}/>
+          <View key={i} style={{flexBasis: '33%', alignItems: 'center', marginTop: 10}}>
+            <Link  key={i} to={`/book-details/${books[i].book_id}/${books[i].author_name}`}>
+              <Book key={i} book={books[i]}/>
             </Link>
           </View>
         )
